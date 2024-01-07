@@ -57,12 +57,6 @@ export default function Friend() {
 								style={tw`bg-neutral-800 p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-md w-full`}
 							>
 								<AddFriend />
-								<Button
-									label="Close"
-									onPress={toggleAddFriendModalVisibility}
-									style={tw`bg-neutral-900 rounded-lg h-12 w-1/4 items-center justify-center`}
-									textStyle={tw`text-lg font-bold text-white dark:text-white`}
-								/>
 							</View>
 						</View>
 					</TouchableWithoutFeedback>

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { TextInput, View, Text } from "react-native";
+import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
 import { handleFriendRequest } from "@/lib/utils";
 import tw from "@/lib/tailwind";
-import { Button, Input } from "../ui";
+import { Button } from "../ui";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function AddFriend() {
 	const [username, setUsername] = useState("");
@@ -60,21 +61,21 @@ export default function AddFriend() {
 	}
 
 	return (
-		<View>
+		<View style={tw`w-full`}>
 			<Text style={tw`h2 ml-2 justify-center`}>Add a friend</Text>
-			<View style={tw`flex-row items-center justify-start ml-2 pt-10`}>
-				<Input
+			<View style={tw`flex-row items-center justify-start w-full ml-2 pt-10`}>
+				<TextInput
 					value={username}
 					onChangeText={(text) => setUsername(text)}
 					placeholder="username"
-					style={tw`flex-grow bg-white rounded text-black h-12`}
+					style={tw`p-2 grow rounded border-2 border-white/10 text-white h-12`}
 				/>
-				<Button
-					label="add"
+				<TouchableOpacity
+					style={tw`flex-row items-center rounded w-14 justify-center ml-2 text-white`}
 					onPress={addFriend}
-					style={tw`ml-5 bg-primary rounded h-12 w-1/4 items-center justify-center`}
-					textStyle={tw`text-lg font-bold text-black dark:text-white`}
-				/>
+				>
+					<Icon name="plus" style={tw`text-white dark:text-white text-xl`} />
+				</TouchableOpacity>
 			</View>
 		</View>
 	);
