@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Button, TouchableOpacity } from "react-native";
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
 import { getUsername } from "@/lib/utils";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 type Friend = {
 	friend_id: number;
@@ -49,10 +50,16 @@ export default function FriendList() {
 	return (
 		<View style={tw`p-4`}>
 			{friends.map((f, index) => (
-				<View key={index}>
-					<Text style={tw` text-xl mb-2 font-bold dark:text-white`}>
+				<View key={index} style={tw`flex-row justify-between`}>
+					<Text style={tw` text-xl mb-2 font-bold dark:text-white pr-2`}>
 						{f.username}
 					</Text>
+					<TouchableOpacity
+						style={tw`flex-row items-center`}
+						onPress={() => console.log("Button pressed")}
+					>
+						<Icon name="bell" style={tw`dark:text-white text-xl`} />
+					</TouchableOpacity>
 				</View>
 			))}
 		</View>

@@ -8,13 +8,14 @@ export type ButtonVariantTypes =
 	| "destructive"
 	| "outline"
 	| "ghost"
-	| "link";
+	| "link"
+	| "icon";
 
 export interface IButtonProps
 	extends React.ComponentProps<typeof TouchableOpacity> {
 	children?: React.ReactNode;
 	variant?: ButtonVariantTypes;
-	size?: "default" | "sm" | "lg";
+	size?: "default" | "sm" | "lg" | "icon";
 	label?: string;
 	isLoading?: boolean;
 }
@@ -39,6 +40,7 @@ export const Button = ({
 				size === "default" && tw`h-10 px-4 py-2`,
 				size === "sm" && tw`h-9 px-3 rounded-md`,
 				size === "lg" && tw`h-11 px-8 rounded-md`,
+				size === "icon" && tw`h-10 w-10 rounded-full`,
 			]}
 			{...props}
 		>
