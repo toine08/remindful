@@ -71,6 +71,7 @@ export default function Login() {
 								autoComplete="email"
 								autoCorrect={false}
 								keyboardType="email-address"
+								style={tw`text-black dark:text-white`}
 							/>
 							{errors.email && (
 								<FormMessage>{errors.email?.message}</FormMessage>
@@ -85,6 +86,7 @@ export default function Login() {
 						<View style={tw`gap-1.5`}>
 							<FormLabel errors={errors.password}>Password</FormLabel>
 							<Input
+								style={tw`text-black dark:text-white`}
 								placeholder="Password"
 								value={value}
 								onChangeText={onChange}

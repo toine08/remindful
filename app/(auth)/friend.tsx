@@ -6,7 +6,6 @@ import {
 	TouchableOpacity,
 	Modal,
 	TextInput,
-	Button,
 	TouchableWithoutFeedback,
 	Keyboard,
 } from "react-native";
@@ -15,6 +14,7 @@ import AddFriend from "../../components/friends/addFriend";
 import FriendRequests from "@/components/friends/friendRequest";
 import FriendList from "@/components/friends/friendList";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Button } from "@/components/ui";
 
 export default function Friend() {
 	const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
@@ -35,10 +35,10 @@ export default function Friend() {
 				<View style={tw`flex-row justify-between w-full items-center m-2 p-2`}>
 					<Text style={tw`h2 font-bold mb-2 dark:text-white`}>Mes amis</Text>
 					<TouchableOpacity
-						style={tw`flex-row items-center bg-primary rounded-full h-10 w-10 justify-center ml-2`}
+						style={tw`flex-row items-center bg-primary rounded-full h-10 w-10 justify-center mr-4 text-white`}
 						onPress={toggleAddFriendModalVisibility}
 					>
-						<Icon name="plus" style={tw`dark:text-white text-xl`} />
+						<Icon name="plus" style={tw`text-white dark:text-white text-xl`} />
 					</TouchableOpacity>
 				</View>
 				<View style={tw`m-2`}>
@@ -52,12 +52,16 @@ export default function Friend() {
 					onRequestClose={toggleAddFriendModalVisibility}
 				>
 					<TouchableWithoutFeedback onPress={handleBackgroundPress}>
-						<View style={tw`flex-1 justify-center items-center`}>
-							<View style={tw`bg-white p-4 h-50 w-full rounded shadow-md w-80`}>
+						<View style={tw`flex-1 justify-end items-center`}>
+							<View
+								style={tw`bg-neutral-800 p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-md w-full`}
+							>
 								<AddFriend />
 								<Button
-									title="Close"
+									label="Close"
 									onPress={toggleAddFriendModalVisibility}
+									style={tw`bg-neutral-900 rounded-lg h-12 w-1/4 items-center justify-center`}
+									textStyle={tw`text-lg font-bold text-white dark:text-white`}
 								/>
 							</View>
 						</View>

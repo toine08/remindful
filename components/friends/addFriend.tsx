@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextInput, View } from "react-native";
+import { TextInput, View, Text } from "react-native";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
 import { handleFriendRequest } from "@/lib/utils";
@@ -60,15 +60,22 @@ export default function AddFriend() {
 	}
 
 	return (
-		<View
-			style={tw`flex-0.5 items-center justify-center bg-background pt-12 dark:bg-dark-background dark:text-white`}
-		>
-			<Input
-				value={username}
-				onChangeText={(text) => setUsername(text)}
-				placeholder="username"
-			/>
-			<Button label="Ajouter" onPress={addFriend} />
+		<View>
+			<Text style={tw`h2 ml-2 justify-center`}>Add a friend</Text>
+			<View style={tw`flex-row items-center justify-start ml-2 pt-10`}>
+				<Input
+					value={username}
+					onChangeText={(text) => setUsername(text)}
+					placeholder="username"
+					style={tw`flex-grow bg-white rounded text-black h-12`}
+				/>
+				<Button
+					label="add"
+					onPress={addFriend}
+					style={tw`ml-5 bg-primary rounded h-12 w-1/4 items-center justify-center`}
+					textStyle={tw`text-lg font-bold text-black dark:text-white`}
+				/>
+			</View>
 		</View>
 	);
 }
