@@ -23,54 +23,69 @@ export default function FriendRequests() {
 		getFriendRequests();
 	}, []);
 
+	async function handleRequest(action: "accepted" | "rejected", friendRequestId: number) {
+  		await handleFriendRequest(action, friendRequestId);
+  
+  		// Mettre à jour l'état des demandes pour supprimer la demande traitée
+  		setRequests(requests.filter(request => request.friend_request_id !== friendRequestId));
+}
+
 	async function getFriendRequests() {
-		const requestsWithUsername = [];
-		const { data: requests, error } = await supabase
-			.from("friends")
-			.select("*")
-			.eq("receiver", user?.id)
-			.eq("state", "pending");
+		try {
+			const { data: requests, error } = await supabase
+				.from("friends")
+				.select("*")
+				.eq("receiver", user?.id)
+				.eq("state", "pending");
 
-		if (error) {
-			console.log("Error fetching friend requests:", error.message);
-		} else if (requests) {
+			if (error) {
+				console.log("Error fetching friend requests:", error.message);
+				return;
+			}
+
+			const requestsWithUsername = await Promise.all(
+				requests.map(async (request) => {
+					const username = await getUsername(request.requester);
+					return {
+						...request,
+						username,
+					};
+				})
+			);
+
 			setFriendRequests(requests);
+			setRequests(requestsWithUsername);
+		} catch (error) {
+			console.log("Error fetching friend requests:", error.message);
 		}
-
-		for (let request of requests) {
-			const username = await getUsername(request.requester);
-			requestsWithUsername.push({
-				...request,
-				username,
-			});
-		}
-		setRequests(requestsWithUsername);
 	}
-
 	return (
-		<View style={tw`p-4`}>
+		<View style={tw``}>
+			{requests.length === 0 ? null : <Text style={tw`h3 font-bold mb-2 dark:text-white`}>Demandes d'amis</Text>}
+
+
 			{requests.map((r) => (
 				<View
 					key={r.friend_request_id}
-					style={tw`mb-4 p-4 border border-gray-200 rounded`}
+					style={tw`flex-row justify-between items-center`}
 				>
-					<Text style={tw`mb-2 font-bold dark:text-white`}>
-						Friend Request from {r.username}
+					<Text style={tw`text-xl font-bold dark:text-white mr-10`}>
+						{r.username}
 					</Text>
 					<View style={tw`flex-row`}>
 						<Button
-							label="Accept"
-							style={tw`mr-2 px-4 py-2 bg-green-500 rounded`}
-							onPress={() =>
-								handleFriendRequest("accepted", r.friend_request_id)
-							}
+							label="Confirm"
+							style={tw`mr-2 px-4 py-2 border-2 border-white rounded `}
+							textStyle={tw`text-white`}
+  							onPress={() => handleRequest('accepted', r.friend_request_id)}
+
 						/>
 						<Button
-							label="Reject"
-							style={tw`px-4 py-2 bg-red-500 rounded`}
-							onPress={() =>
-								handleFriendRequest("rejected", r.friend_request_id)
-							}
+							label="Delete"
+							style={tw`px-4 py-2  border-2 border-red-400 rounded`}
+							textStyle={tw`text-white`}
+  							onPress={() => handleRequest('rejected', r.friend_request_id)}
+
 						/>
 					</View>
 				</View>
