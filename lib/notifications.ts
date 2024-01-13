@@ -64,7 +64,7 @@ export const sendPushNotification = async (userId: string, title: string, body: 
       'accept': 'application/json',
       'accept-encoding': 'gzip, deflate',
       'content-type': 'application/json',
-      'authorization': `Bearer ${expoKey}`,  // Ajoutez cette ligne
+      'authorization': `Bearer ${expoKey}`,
 
     },
     body: JSON.stringify(message),
