@@ -32,6 +32,13 @@ export async function getUsername(userId: string): Promise<string | null> {
 }
 
 
+	export async function getConnectedUsername(userId: string | undefined) {
+		const response = await getUsername(userId || '');
+		const usernameCapitalized = response ? response.charAt(0).toUpperCase() + response.slice(1) : '';
+		return usernameCapitalized; // accéder à la propriété username de l'objet retourné
+	}
+
+
 export const updatePushToken = async (tokenValue: string | undefined, userId: string) => {
   try {
     // Récupérer l'enregistrement de l'utilisateur

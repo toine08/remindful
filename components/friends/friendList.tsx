@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
-import { getUsername } from "@/lib/utils";
+import { getUsername, getConnectedUsername } from "@/lib/utils";
 import { sendPushNotification } from "@/lib/notifications";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -25,16 +25,9 @@ export default function FriendList() {
 	const [connectedUsername, setConnectedUsername] = useState('');
 
 
-
-	async function getConnectedUsername() {
-		const response = await getUsername(user?.id || '');
-		const usernameCapitalized = response ? response.charAt(0).toUpperCase() + response.slice(1) : '';
-		return usernameCapitalized; // accéder à la propriété username de l'objet retourné
-	}
-
 	useEffect(() => {
 		getFriends();
-		getConnectedUsername().then(connectedUsername => setConnectedUsername(connectedUsername || ''));
+		getConnectedUsername(user?.id).then(connectedUsername => setConnectedUsername(connectedUsername || ''));
 	}, []);
 
 	async function getFriends() {

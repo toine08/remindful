@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { sendPushNotification } from "@/lib/notifications";
+import { getConnectedUsername } from "@/lib/utils";
 
 export default function AddFriend() {
 	const [username, setUsername] = useState("");
+	const [connectedUsername, setConnectedUsername] = useState("");
 	const { user } = useSupabase();
 	const connectedUser = user;
+
+	useEffect(() => {
+		getConnectedUsername(user?.id).then(connectedUsername => setConnectedUsername(connectedUsername || ''));
+
+	}, [])
+
+
 
 	async function addFriend() {
 		// Search for an username in the "profile" table
@@ -56,6 +66,10 @@ export default function AddFriend() {
 		if (!insertError) {
 			alert("Request send!");
 		}
+
+		setTimeout(() => {
+			sendPushNotification(data.id, "Friend request", `${connectedUsername} sent you a friend request!`);
+		}, 3000);
 	}
 
 	return (
@@ -78,3 +92,5 @@ export default function AddFriend() {
 		</View>
 	);
 }
+
+
