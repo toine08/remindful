@@ -11,12 +11,16 @@ export default function Index() {
 	const { signOut, user } = useSupabase();
 	const [username, setUsername] = useState<string | null>(null);
 
-	useEffect(() => {
-		if (user?.id) {
-			getUsername();
-		}
-		registerForPushNotifications().then((token: string) => console.log(token));
-	}, [user]);
+useEffect(() => {
+  if (user?.id) {
+    getUsername();
+  }
+  registerForPushNotifications().then((token: string | undefined) => {
+    const tokenValue = token ?? ""; // Utilisez le chaînage optionnel et une valeur par défaut
+    // Ajoutez tokenValue à la table des profils
+    supabase.from("profiles").update({ push_token: tokenValue }).eq("id", user?.id);
+  });
+}, [user]);
 
 	async function getUsername() {
 		const { data: profiles, error } = await supabase
