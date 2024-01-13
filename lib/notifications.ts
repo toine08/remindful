@@ -16,6 +16,7 @@ export async function registerForPushNotifications() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("token from /notification.ts", token)
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -28,6 +29,11 @@ export async function registerForPushNotifications() {
       lightColor: '#FF231F7C',
     });
   }
+  let match = token.match(/\[(.*?)\]/);
+  if (match) {
+  let extractedToken = match[1];
+  token = extractedToken;
+}
 
   return token;
 }

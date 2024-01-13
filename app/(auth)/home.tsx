@@ -18,6 +18,7 @@ useEffect(() => {
   registerForPushNotifications().then((token: string | undefined) => {
     const tokenValue = token ?? ""; // Utilisez le chaînage optionnel et une valeur par défaut
     // Ajoutez tokenValue à la table des profils
+    console.log("tokenvalue",tokenValue);
     supabase.from("profiles").update({ push_token: tokenValue }).eq("id", user?.id);
   });
 }, [user]);
