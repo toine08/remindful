@@ -5,23 +5,26 @@ import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
 import { Button } from "@/components/ui";
 import { registerForPushNotifications } from '../../lib/notifications';
+import { updatePushToken } from "@/lib/utils";
 
 
 export default function Index() {
 	const { signOut, user } = useSupabase();
 	const [username, setUsername] = useState<string | null>(null);
+	const [tokenUpdated, setTokenUpdated] = useState(false);
+
 
 useEffect(() => {
-  if (user?.id) {
-    getUsername();
-  }
-  registerForPushNotifications().then((token: string | undefined) => {
-    const tokenValue = token ?? ""; // Utilisez le chaînage optionnel et une valeur par défaut
-    // Ajoutez tokenValue à la table des profils
-    console.log("tokenvalue",tokenValue);
-    supabase.from("profiles").update({ push_token: tokenValue }).eq("id", user?.id);
-  });
-}, [user]);
+	if (user?.id) {
+		getUsername();
+	}
+    if (!tokenUpdated) {
+      registerForPushNotifications().then((token: string | undefined) => {
+        const tokenValue = token ?? "";
+        updatePushToken(tokenValue, user?.id).then(() => setTokenUpdated(true));
+      });
+    }
+}, [user,tokenUpdated]);
 
 	async function getUsername() {
 		const { data: profiles, error } = await supabase

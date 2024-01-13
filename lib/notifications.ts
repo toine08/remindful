@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+import { supabase } from '@/config/supabase';
 
 export async function registerForPushNotifications() {
   let token;
@@ -16,7 +17,6 @@ export async function registerForPushNotifications() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("token from /notification.ts", token)
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -29,7 +29,7 @@ export async function registerForPushNotifications() {
       lightColor: '#FF231F7C',
     });
   }
-  let match = token.match(/\[(.*?)\]/);
+  let match = token?.match(/\[(.*?)\]/);
   if (match) {
   let extractedToken = match[1];
   token = extractedToken;
@@ -38,34 +38,34 @@ export async function registerForPushNotifications() {
   return token;
 }
 
-export async function sendPushNotification(userId, title, body) {
+const sendPushNotification = async (userId: string, title: string, body: string) => {
+  // Récupérer le jeton de notification push de l'utilisateur
+  const { data: user, error } = await supabase
+    .from('profiles')
+    .select('push_token')
+    .eq('id', userId)
+    .single();
+
+  if (error || !user?.push_token) {
+    console.log('Erreur lors de la récupération du jeton push :', error);
+    return;
+  }
+
   const message = {
-    to: userId,
+    to: user.push_token,
     sound: 'default',
     title: title,
     body: body,
-    data: { data: 'goes here' },
-    _displayInForeground: true,
+    data: { someData: 'goes here' },
   };
 
-  try {
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
-
-    console.log('Push notification sent successfully.');
-  } catch (error) {
-    console.error('Error sending push notification:', error.message);
-  }
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  });
 };
-
-// Usage
-const userId = 12345;
-const token = registerForPushNotifications();
-sendPushNotification(token, 'New message', 'You have received a new message');
