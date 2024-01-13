@@ -21,7 +21,7 @@ useEffect(() => {
     if (!tokenUpdated) {
       registerForPushNotifications().then((token: string | undefined) => {
         const tokenValue = token ?? "";
-        updatePushToken(tokenValue, user?.id).then(() => setTokenUpdated(true));
+        updatePushToken(tokenValue, user?.id ??"").then(() => setTokenUpdated(true));
       });
     }
 }, [user,tokenUpdated]);

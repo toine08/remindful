@@ -3,9 +3,7 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { supabase } from '@/config/supabase';
 
-const expoKey = process.env.EXPO_ACCESS_TOKEN as string;
-
-console.log(process.env, "expokey ici");
+const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;
 
 export async function registerForPushNotifications() {
   let token;
