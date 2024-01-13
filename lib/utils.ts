@@ -67,3 +67,4 @@ export const updatePushToken = async (tokenValue: string | undefined, userId: st
     console.error('Erreur lors de la mise à jour du jeton push :', error);
   }
 };
+

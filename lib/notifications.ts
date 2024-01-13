@@ -3,6 +3,10 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { supabase } from '@/config/supabase';
 
+const expoKey = process.env.EXPO_ACCESS_TOKEN as string;
+
+console.log(process.env, "expokey ici");
+
 export async function registerForPushNotifications() {
   let token;
   if (Constants.isDevice) {
@@ -29,16 +33,11 @@ export async function registerForPushNotifications() {
       lightColor: '#FF231F7C',
     });
   }
-  let match = token?.match(/\[(.*?)\]/);
-  if (match) {
-  let extractedToken = match[1];
-  token = extractedToken;
+    return token;
 }
 
-  return token;
-}
 
-const sendPushNotification = async (userId: string, title: string, body: string) => {
+export const sendPushNotification = async (userId: string, title: string, body: string) => {
   // Récupérer le jeton de notification push de l'utilisateur
   const { data: user, error } = await supabase
     .from('profiles')
@@ -59,13 +58,28 @@ const sendPushNotification = async (userId: string, title: string, body: string)
     data: { someData: 'goes here' },
   };
 
-  await fetch('https://exp.host/--/api/v2/push/send', {
+  try {
+  const response = await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
+      'host': 'exp.host',
+      'accept': 'application/json',
+      'accept-encoding': 'gzip, deflate',
+      'content-type': 'application/json',
+      'authorization': `Bearer ${expoKey}`,  // Ajoutez cette ligne
+
     },
     body: JSON.stringify(message),
   });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`HTTP error! status: ${response.status} ${text}`);
+  }
+
+  const receipt = await response.json();
+  console.log('Notification envoyée avec succès :', receipt);
+} catch (error) {
+  console.log('Erreur lors de l\'envoi de la notification :', error);
+}
 };
