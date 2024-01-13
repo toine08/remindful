@@ -39,7 +39,7 @@ export const Button = ({
 	return (
 		<TouchableOpacity
 			style={StyleSheet.flatten([
-				tw`flex-row items-center justify-center`,
+				tw`flex-row items-center justify-center rounded-md`,
 				variant === "primary" && tw`bg-primary dark:bg-dark-primary`,
 				variant === "secondary" && tw`bg-secondary dark:bg-dark-secondary`,
 				variant === "destructive" &&

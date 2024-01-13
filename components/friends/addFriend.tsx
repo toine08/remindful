@@ -2,9 +2,7 @@ import { useState } from "react";
 import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
-import { handleFriendRequest } from "@/lib/utils";
 import tw from "@/lib/tailwind";
-import { Button } from "../ui";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function AddFriend() {

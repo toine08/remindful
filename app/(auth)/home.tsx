@@ -4,16 +4,18 @@ import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
 import { Button } from "@/components/ui";
+import { registerForPushNotifications } from '../../lib/notifications';
+
 
 export default function Index() {
 	const { signOut, user } = useSupabase();
 	const [username, setUsername] = useState<string | null>(null);
 
 	useEffect(() => {
-		console.log("useEffect called, user:", user?.id);
 		if (user?.id) {
 			getUsername();
 		}
+		registerForPushNotifications().then((token: string) => console.log(token));
 	}, [user]);
 
 	async function getUsername() {
@@ -35,7 +37,7 @@ export default function Index() {
 		>
 			<View>
 				<Text style={tw`text-xl dark:text-white`}>Hello {username}</Text>
-				<Button label="SignOut" onPress={signOut} />
+				<Button label="SignOut" textStyle={tw`font-bold`} onPress={signOut} />
 			</View>
 		</View>
 	);
