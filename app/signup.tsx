@@ -53,6 +53,42 @@ export default function SignUp() {
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		try {
+
+			//check if username is already used
+			let { data: usernameData, error: usernameError } = await supabase
+				.from('profiles')
+				.select('username')
+				.eq('username', data.username);
+
+			if (usernameError) {
+				console.error('Erreur lors de la vérification du nom d\'utilisateur :', usernameError);
+				return;
+			}
+
+			if (usernameData && usernameData.length > 0) {
+				alert('This username is already used');
+				return;
+			}
+
+			//check if email is already used
+
+			let { data: emailData, error: emailError } = await supabase
+				.from('profiles')
+				.select('email')
+				.eq('email', data.email);
+
+			if (emailError) {
+				console.error('Erreur lors de la vérification de l\'e-mail :', emailError);
+				return;
+			}
+
+			if (emailData && emailData.length > 0) {
+				alert('This mail is already used');
+				return;
+			}
+
+
+
 			const { user, error } = await supabase.auth.signUp({
 				email: data.email,
 				password: data.password,
@@ -84,6 +120,7 @@ export default function SignUp() {
 				}
 
 				console.log("User and profile created:", user, profile);
+				alert("A confirmation mail as been sent!");
 			}
 		} catch (error: Error | any) {
 			console.log("Unexpected error:", error.message);
