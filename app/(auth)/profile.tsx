@@ -15,12 +15,12 @@ import { Buffer } from 'buffer';
 
 
 export default function Profile() {
-     const { signOut, user, session } = useSupabase();
+     const { signOut, user } = useSupabase();
      const [username, setUsername] = useState<string | null>(null);
      const [tokenUpdated, setTokenUpdated] = useState(false);
      const [isLoading, setIsLoading] = useState(false);
 
-     const pictureProfile = supabase.storage.from('avatars').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
+     const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
 
      useEffect(() => {
           if (user?.id) {
@@ -86,9 +86,9 @@ export default function Profile() {
 
                const buffer = Buffer.from(fileContent, 'base64');
 
-               const { error } = await supabase.storage.from('avatars').upload(`${user?.id}/avatar.png`, buffer, {
+               const { error } = await supabase.storage.from('avatar').upload(`${user?.id}/avatar.png`, buffer, {
                     upsert: true,
-                    contentType: 'image/*',
+                    contentType: 'image/png',
                });
 
                if (error) {
@@ -116,17 +116,18 @@ export default function Profile() {
                style={tw`flex-1 items-center justify-center bg-background pt-12 dark:bg-dark-background dark:text-white`}
           >
                <View>
+                    <Text style={tw`text-xl dark:text-white`}>Profile</Text>
                     <TouchableOpacity
                          onPress={() => console.log("small press")}
                          onLongPress={uploadAvatar}
                          style={tw`flex-row items-center rounded-full h-25 w-25 justify-center ml-2 text-white bg-white/10`}
                     >
                          {isLoading ? (
-                              <ActivityIndicator size="large" color="#0000ff" />
+                              <ActivityIndicator size="large" color="#00000" />
                          ) : (
                               <Image
                                    source={{ uri: pictureProfile.data.publicUrl }}
-                                   style={tw`h-25 w-25 rounded-full`}
+                                   style={tw`h-30 w-30 rounded-full`}
                               />
                          )}
 
