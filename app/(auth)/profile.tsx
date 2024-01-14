@@ -10,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
@@ -19,6 +20,8 @@ export default function Profile() {
      const [username, setUsername] = useState<string | null>(null);
      const [tokenUpdated, setTokenUpdated] = useState(false);
      const [isLoading, setIsLoading] = useState(false);
+     const [imagePath, setImagePath] = useState(null);
+
 
      const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
 
@@ -32,7 +35,25 @@ export default function Profile() {
                     updatePushToken(tokenValue, user?.id ?? "").then(() => setTokenUpdated(true));
                });
           }
-     }, [user, tokenUpdated]);
+
+          downloadImage(pictureProfile.data.publicUrl)
+               .then(setImagePath)
+               .catch(console.error);
+     }, [user, tokenUpdated, pictureProfile.data.publicUrl]);
+
+     const downloadImage = async (url) => {
+          const filename = url.substring(url.lastIndexOf('/') + 1);
+          const path = FileSystem.documentDirectory + filename;
+
+          const image = await FileSystem.getInfoAsync(path);
+          if (image.exists) {
+               return image.uri;
+          }
+
+          console.log('Downloading image to cache');
+          await FileSystem.downloadAsync(url, path);
+          return path;
+     };
 
      async function uploadAvatar() {
           setIsLoading(true);
@@ -126,7 +147,7 @@ export default function Profile() {
                               <ActivityIndicator size="large" color="#00000" />
                          ) : (
                               <Image
-                                   source={{ uri: pictureProfile.data.publicUrl }}
+                                   source={{ uri: imagePath }}
                                    style={tw`h-30 w-30 rounded-full`}
                               />
                          )}
