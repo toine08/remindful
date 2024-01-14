@@ -21,6 +21,9 @@ export default function Menu() {
 				<Link href="(auth)/friend" style={tw`items-center`}>
 					<Icon name="users" size={25} />
 				</Link>
+				<Link href="(auth)/profile" style={tw`items-center`}>
+					<Icon name="user" size={25} />
+				</Link>
 			</View>
 		);
 	}
