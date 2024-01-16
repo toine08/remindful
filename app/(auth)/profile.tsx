@@ -3,31 +3,42 @@ import { Text, View, TouchableOpacity, Image, ActivityIndicator } from "react-na
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { registerForPushNotifications } from '../../lib/notifications';
 import { updatePushToken, getUsername } from "@/lib/utils";
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 
 
 
 export default function Profile() {
+     const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
+
      const { signOut, user } = useSupabase();
      const [username, setUsername] = useState<string | null>(null);
+     const [firstName, setFirstName] = useState<string | null>(null);
+     const [lastName, setLastName] = useState<string | null>(null);
      const [tokenUpdated, setTokenUpdated] = useState(false);
      const [isLoading, setIsLoading] = useState(false);
      const [imagePath, setImagePath] = useState(null);
+     const [firstNameValue, setFirstNameValue] = useState(firstName);
+     const [lastNameValue, setLastNameValue] = useState(lastName);
+
+     const handleUpdateInfos = () => {
+          updateFirstName(firstNameValue);
+          updateLastName(lastNameValue);
+     };
 
 
-     const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
 
      useEffect(() => {
           if (user?.id) {
                getUsername(user?.id).then(username => setUsername(username || ''));
+               getFirstName(user?.id).then(firstName => setFirstNameValue(firstName || ''));
+               getLastName(user?.id).then(lastName => setLastNameValue(lastName || ''));
           }
           if (!tokenUpdated) {
                registerForPushNotifications().then((token: string | undefined) => {
@@ -131,17 +142,57 @@ export default function Profile() {
           setIsLoading(false);
 
      }
+     async function getFirstName(userId) {
+          const { data: profiles, error } = await supabase
+               .from("profiles")
+               .select("first_name")
+               .eq("id", userId)
+               .single();
+          if (profiles && profiles.first_name) {
+               return profiles.first_name;
+          }
+          return null;
+     }
+     async function getLastName(userId) {
+          const { data: profiles, error } = await supabase
+               .from("profiles")
+               .select("last_name")
+               .eq("id", userId)
+               .single();
+          if (profiles && profiles.last_name) {
+               return profiles.last_name;
+          }
+          return null;
+     }
+     async function updateFirstName(firstName) {
+          const { data: profiles, error } = await supabase
+               .from("profiles")
+               .update({ first_name: firstName })
+               .eq("id", user?.id)
+               .single();
+          if (profiles && profiles.first_name) {
+               return profiles.first_name;
+          }
+          return null;
+     }
+     async function updateLastName(lastName) {
+          const { data: profiles, error } = await supabase
+               .from("profiles")
+               .update({ last_name: lastName })
+               .eq("id", user?.id)
+               .single();
+          if (profiles && profiles.last_name) {
+               return profiles.last_name;
+          }
+          return null;
+     }
 
      return (
-          <View
-               style={tw`flex-1 items-center justify-center bg-background pt-12 dark:bg-dark-background dark:text-white`}
-          >
-               <View>
-                    <Text style={tw`text-xl dark:text-white`}>Profile</Text>
+          <View style={tw`p-4 flex-1 items-start justify-center dark:bg-black`}>
+               <View style={tw`flex-row items-center`}>
                     <TouchableOpacity
                          onPress={() => console.log("small press")}
                          onLongPress={uploadAvatar}
-                         style={tw`flex-row items-center rounded-full h-25 w-25 justify-center ml-2 text-white bg-white/10`}
                     >
                          {isLoading ? (
                               <ActivityIndicator size="large" color="#00000" />
@@ -151,12 +202,12 @@ export default function Profile() {
                                    style={tw`h-30 w-30 rounded-full`}
                               />
                          )}
-
                     </TouchableOpacity>
-
-
-                    <Text style={tw`text-xl dark:text-white`}>Hello {username}</Text>
-                    <Button label="SignOut" textStyle={tw`font-bold`} onPress={signOut} />
+                    <Text style={tw`ml-4 text-2xl font-bold dark:text-white`}>{username}</Text>
+               </View>
+               <View style={tw`flex flex-col ml-4 gap-y-4`}>
+                    <Input placeholder={firstName ?? 'Firstname'} value={firstNameValue} onChangeText={setFirstNameValue} />
+                    <Input placeholder={lastName ?? 'Lastname'} value={lastNameValue} onChangeText={setLastNameValue} />
                </View>
           </View>
      );
