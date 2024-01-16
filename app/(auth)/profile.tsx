@@ -28,8 +28,12 @@ export default function Profile() {
      const [lastNameValue, setLastNameValue] = useState(lastName);
 
      const handleUpdateInfos = () => {
-          updateFirstName(firstNameValue);
-          updateLastName(lastNameValue);
+          if (firstNameValue !== null) {
+               updateFirstName(firstNameValue);
+          }
+          if (lastNameValue !== null) {
+               updateLastName(lastNameValue);
+          }
      };
 
 
@@ -170,8 +174,8 @@ export default function Profile() {
                .update({ first_name: firstName })
                .eq("id", user?.id)
                .single();
-          if (profiles && profiles.first_name) {
-               return profiles.first_name;
+          if (profiles && (profiles as { first_name: string }).first_name) {
+               return (profiles as { first_name: string }).first_name;
           }
           return null;
      }
@@ -181,8 +185,8 @@ export default function Profile() {
                .update({ last_name: lastName })
                .eq("id", user?.id)
                .single();
-          if (profiles && profiles.last_name) {
-               return profiles.last_name;
+          if (profiles && (profiles as { last_name: string }).last_name) {
+               return (profiles as { last_name: string }).last_name;
           }
           return null;
      }
@@ -208,8 +212,8 @@ export default function Profile() {
                          <Text style={tw`ml-4 text-2xl font-bold dark:text-white`}>{username}</Text>
                     </View>
                     <View style={tw`flex flex-col mt-2 gap-y-4`}>
-                         <Input size={"large"} placeholder={firstName ?? 'Firstname'} value={firstNameValue} onChangeText={setFirstNameValue} />
-                         <Input size={"large"} placeholder={lastName ?? 'Lastname'} value={lastNameValue} onChangeText={setLastNameValue} />
+                         <Input size={"large"} placeholder={firstName ?? 'Firstname'} value={firstNameValue ?? ''} onChangeText={setFirstNameValue} />
+                         <Input size={"large"} placeholder={lastName ?? 'Lastname'} value={lastNameValue ?? ''} onChangeText={setLastNameValue} />
                     </View>
                     <Button variant="full" label="Update infos" onPress={handleUpdateInfos} />
                </View>
