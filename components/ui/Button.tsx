@@ -15,7 +15,8 @@ export type ButtonVariantTypes =
 	| "outline"
 	| "ghost"
 	| "link"
-	| "icon";
+	| "icon"
+	| "full"; // Add "full" variant here
 
 export interface IButtonProps
 	extends React.ComponentProps<typeof TouchableOpacity> {
@@ -24,7 +25,7 @@ export interface IButtonProps
 	size?: "default" | "sm" | "lg" | "icon";
 	label?: string;
 	isLoading?: boolean;
-	textStyle?: TextStyle; // Ajoutez cette ligne
+	textStyle?: TextStyle;
 }
 
 export const Button = ({
@@ -33,18 +34,18 @@ export const Button = ({
 	size = "default",
 	label = "Button",
 	isLoading = false,
-	textStyle, // Ajoutez cette ligne
+	textStyle,
 	...props
 }: IButtonProps) => {
 	return (
 		<TouchableOpacity
 			style={StyleSheet.flatten([
-				tw`flex-row items-center justify-center rounded-md`,
+				tw`items-center justify-center rounded-md`,
 				variant === "primary" && tw`bg-primary dark:bg-dark-primary`,
 				variant === "secondary" && tw`bg-secondary dark:bg-dark-secondary`,
-				variant === "destructive" &&
-					tw`bg-destructive dark:bg-dark-destructive`,
+				variant === "destructive" && tw`bg-destructive dark:bg-dark-destructive`,
 				variant === "outline" && tw`border border-input`,
+				variant === "full" && tw`w-60 bg-secondary h-10 `,
 				size === "default" && tw`h-10 px-4 py-2`,
 				size === "sm" && tw`h-9 px-3 rounded-md`,
 				size === "lg" && tw`h-11 px-8 rounded-md`,
@@ -52,7 +53,7 @@ export const Button = ({
 			])}
 			{...props}
 		>
-			<Text style={textStyle}>{label}</Text>
+			<Text style={[textStyle, { textAlign: 'center' }]}>{label}</Text>
 		</TouchableOpacity>
 	);
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, Image, ActivityIndicator } from "react-native";
+import { Text, View, TouchableOpacity, Image, ActivityIndicator, SafeAreaView } from "react-native";
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
@@ -15,9 +15,9 @@ import { Buffer } from 'buffer';
 
 
 export default function Profile() {
+     const { signOut, user } = useSupabase();
      const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
 
-     const { signOut, user } = useSupabase();
      const [username, setUsername] = useState<string | null>(null);
      const [firstName, setFirstName] = useState<string | null>(null);
      const [lastName, setLastName] = useState<string | null>(null);
@@ -52,7 +52,7 @@ export default function Profile() {
                .catch(console.error);
      }, [user, tokenUpdated, pictureProfile.data.publicUrl]);
 
-     const downloadImage = async (url) => {
+     const downloadImage = async (url: string) => {
           const filename = url.substring(url.lastIndexOf('/') + 1);
           const path = FileSystem.documentDirectory + filename;
 
@@ -142,7 +142,7 @@ export default function Profile() {
           setIsLoading(false);
 
      }
-     async function getFirstName(userId) {
+     async function getFirstName(userId: string) {
           const { data: profiles, error } = await supabase
                .from("profiles")
                .select("first_name")
@@ -153,7 +153,7 @@ export default function Profile() {
           }
           return null;
      }
-     async function getLastName(userId) {
+     async function getLastName(userId: string) {
           const { data: profiles, error } = await supabase
                .from("profiles")
                .select("last_name")
@@ -164,7 +164,7 @@ export default function Profile() {
           }
           return null;
      }
-     async function updateFirstName(firstName) {
+     async function updateFirstName(firstName: string) {
           const { data: profiles, error } = await supabase
                .from("profiles")
                .update({ first_name: firstName })
@@ -175,7 +175,7 @@ export default function Profile() {
           }
           return null;
      }
-     async function updateLastName(lastName) {
+     async function updateLastName(lastName: string) {
           const { data: profiles, error } = await supabase
                .from("profiles")
                .update({ last_name: lastName })
@@ -188,27 +188,31 @@ export default function Profile() {
      }
 
      return (
-          <View style={tw`p-4 flex-1 items-start justify-center dark:bg-black`}>
-               <View style={tw`flex-row items-center`}>
-                    <TouchableOpacity
-                         onPress={() => console.log("small press")}
-                         onLongPress={uploadAvatar}
-                    >
-                         {isLoading ? (
-                              <ActivityIndicator size="large" color="#00000" />
-                         ) : (
-                              <Image
-                                   source={{ uri: imagePath }}
-                                   style={tw`h-30 w-30 rounded-full`}
-                              />
-                         )}
-                    </TouchableOpacity>
-                    <Text style={tw`ml-4 text-2xl font-bold dark:text-white`}>{username}</Text>
+          <SafeAreaView style={tw`flex-1  items-center dark:bg-black`}>
+               <Text style={tw`p-4 text-2xl font-bold dark:text-white`}>Profile</Text>
+               <View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
+                    <View style={tw`flex-row items-center`}>
+                         <TouchableOpacity
+                              onPress={() => console.log("small press")}
+                              onLongPress={uploadAvatar}
+                         >
+                              {isLoading ? (
+                                   <ActivityIndicator size="large" color="#00000" />
+                              ) : (
+                                   <Image
+                                        source={{ uri: imagePath }}
+                                        style={tw`h-30 w-30 rounded-full`}
+                                   />
+                              )}
+                         </TouchableOpacity>
+                         <Text style={tw`ml-4 text-2xl font-bold dark:text-white`}>{username}</Text>
+                    </View>
+                    <View style={tw`flex flex-col mt-2 gap-y-4`}>
+                         <Input size={"large"} placeholder={firstName ?? 'Firstname'} value={firstNameValue} onChangeText={setFirstNameValue} />
+                         <Input size={"large"} placeholder={lastName ?? 'Lastname'} value={lastNameValue} onChangeText={setLastNameValue} />
+                    </View>
+                    <Button variant="full" label="Update infos" onPress={handleUpdateInfos} />
                </View>
-               <View style={tw`flex flex-col ml-4 gap-y-4`}>
-                    <Input placeholder={firstName ?? 'Firstname'} value={firstNameValue} onChangeText={setFirstNameValue} />
-                    <Input placeholder={lastName ?? 'Lastname'} value={lastNameValue} onChangeText={setLastNameValue} />
-               </View>
-          </View>
+          </SafeAreaView>
      );
 }
