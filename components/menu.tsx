@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { SafeAreaView, TouchableOpacity, View } from "react-native";
 import { Link } from "expo-router";
 import tw from "@/lib/tailwind";
 import Icon from "react-native-vector-icons/Feather";
@@ -9,22 +9,27 @@ export default function Menu() {
 
 	if (!user) {
 		return null;
-		console.log("No user is currently authenticated");
-	} else {
-		console.log(`User is currently authenticated ${user.id}`);
-		return (
-			<View style={tw`flex-row items-center justify-around m-2 h-18 bg-white`}>
+	}
+
+	return (
+		<SafeAreaView style={tw`flex-row items-center justify-around h-1/9 w-full bg-white`}>
+			<TouchableOpacity activeOpacity={1}>
 				<Link href="(auth)/home" style={tw` items-center`}>
 					<Icon name="home" size={25} />
 				</Link>
+			</TouchableOpacity>
 
-				<Link href="(auth)/friend" style={tw`items-center`}>
+			<TouchableOpacity activeOpacity={1}>
+				<Link href="(auth)/notification" style={tw`items-center`}>
 					<Icon name="users" size={25} />
 				</Link>
+			</TouchableOpacity>
+
+			<TouchableOpacity activeOpacity={1}>
 				<Link href="(auth)/profile" style={tw`items-center`}>
 					<Icon name="user" size={25} />
 				</Link>
-			</View>
-		);
-	}
+			</TouchableOpacity>
+		</SafeAreaView>
+	);
 }

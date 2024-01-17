@@ -1,52 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { useSupabase } from "@/hooks/useSupabase";
-import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
+import React, { useState } from "react";
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	Modal,
+	TextInput,
+	TouchableWithoutFeedback,
+	Keyboard,
+} from "react-native";
+
+import AddFriend from "../../components/friends/addFriend";
+import FriendRequests from "@/components/friends/friendRequest";
+import FriendList from "@/components/friends/friendList";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { Button } from "@/components/ui";
-import { registerForPushNotifications } from '../../lib/notifications';
-import { updatePushToken } from "@/lib/utils";
 
 
 export default function Index() {
-	const { signOut, user } = useSupabase();
-	const [username, setUsername] = useState<string | null>(null);
-	const [tokenUpdated, setTokenUpdated] = useState(false);
+	const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
 
+	const toggleAddFriendModalVisibility = () => {
+		setAddFriendModalVisible(!isAddFriendModalVisible);
+	};
 
-useEffect(() => {
-	if (user?.id) {
-		getUsername();
-	}
-    if (!tokenUpdated) {
-      registerForPushNotifications().then((token: string | undefined) => {
-        const tokenValue = token ?? "";
-        updatePushToken(tokenValue, user?.id ??"").then(() => setTokenUpdated(true));
-      });
-    }
-}, [user,tokenUpdated]);
-
-	async function getUsername() {
-		const { data: profiles, error } = await supabase
-			.from("profiles")
-			.select("username")
-			.eq("id", user?.id)
-			.single();
-
-		if (profiles && profiles.username) {
-			setUsername(profiles.username);
-			console.log(profiles.username);
-		}
-	}
+	const handleBackgroundPress = () => {
+		setAddFriendModalVisible(false);
+	};
 
 	return (
-		<View
-			style={tw`flex-1 items-center justify-center bg-background pt-12 dark:bg-dark-background dark:text-white`}
-		>
-			<View>
-				<Text style={tw`text-xl dark:text-white`}>Hello {username}</Text>
-				<Button label="SignOut" textStyle={tw`font-bold`} onPress={signOut} />
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+			<View style={tw`pt-10 flex-1 items-start w-full justify-start bg-background dark:bg-dark-background dark:text-white`}>
+				<View style={tw`flex-1 w-full items-center p-2`}>
+					<View style={tw`w-full mt-2 `}>
+						<Text style={tw`h2 font-bold mb-2 dark:text-white self-center mx-auto`}>Home</Text>
+					</View>
+					<View style={tw`flex-row justify-end w-full`}>
+						<TouchableOpacity
+							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center text-white`}
+							onPress={toggleAddFriendModalVisibility}
+						>
+							<Icon name="plus" style={tw`text-white dark:text-white text-3xl`} />
+						</TouchableOpacity>
+					</View>
+					<View style={tw`flex-1 w-full`}>
+						<FriendList />
+						<FriendRequests />
+					</View>
+				</View>
+				<Modal
+					animationType="slide"
+					transparent={true}
+					visible={isAddFriendModalVisible}
+					onRequestClose={toggleAddFriendModalVisibility}
+				>
+
+					<TouchableWithoutFeedback onPress={handleBackgroundPress}>
+						<View style={tw`flex-1 justify-end items-center`}>
+							<View style={tw`bg-neutral-800 p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-md w-full`}>
+								<AddFriend />
+							</View>
+						</View>
+					</TouchableWithoutFeedback>
+				</Modal>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 }
