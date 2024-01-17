@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { TextInput, View, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
@@ -12,10 +12,12 @@ export default function AddFriend() {
 	const [connectedUsername, setConnectedUsername] = useState("");
 	const { user } = useSupabase();
 	const connectedUser = user;
+	const inputRef = useRef();
+
 
 	useEffect(() => {
 		getConnectedUsername(user?.id).then(connectedUsername => setConnectedUsername(connectedUsername || ''));
-
+		inputRef.current?.focus()
 	}, [])
 
 
@@ -78,6 +80,8 @@ export default function AddFriend() {
 			<View style={tw`flex-row items-center justify-start w-full ml-2 pt-10`}>
 				<TextInput
 					value={username}
+					ref={inputRef}
+					onFocus={() => setUsername("")}
 					onChangeText={(text) => setUsername(text)}
 					placeholder="username"
 					style={tw`p-2 grow rounded border-2 border-white/10 text-white h-12`}

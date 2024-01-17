@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, ScrollView, SafeAreaView, FlatList } from "react-native";
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
@@ -57,22 +57,27 @@ export default function FriendList() {
 
 
 	return (
-		<View style={tw`p-4`}>
-			{friends.map((f, index) => (
-				<View key={index} style={tw`flex-row justify-between`}>
-					<Text style={tw` text-xl mb-2 font-bold dark:text-white pr-2`}>
-						{f.username}
-					</Text>
-					<TouchableOpacity
-						style={tw`flex-row items-center`}
-						onPress={() => {
-							sendPushNotification(f.friend_id, "Remindful", `${connectedUsername} pense à toi!`);
-						}}
-					>
-						<Icon name="bell" style={tw`dark:text-white text-xl`} />
-					</TouchableOpacity>
-				</View>
-			))}
+		<View style={tw`flex-1 pt-5 dark:bg-dark-background w-full`}>
+			<FlatList
+				data={friends}
+				keyExtractor={(item, index) => index.toString()}
+				renderItem={({ item: friend }) => (
+					<View style={tw`flex-row justify-between`}>
+						<Text style={tw` text-xl mb-2 font-bold w-5/6 dark:text-white`}>
+							{friend.username}
+						</Text>
+						<TouchableOpacity
+							style={tw`flex-row items-center w-1/6`}
+							onPress={() => {
+								sendPushNotification(friend.friend_id, "Remindful", `${connectedUsername} pense à toi!`);
+							}}
+						>
+							<Icon name="bell" style={tw`dark:text-white text-xl`} />
+						</TouchableOpacity>
+					</View>
+				)}
+				ListFooterComponent={<View style={{ height: 100 }} />} // Ajoutez un espace supplémentaire à la fin
+			/>
 		</View>
 	);
 }
