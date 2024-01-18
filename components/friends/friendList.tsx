@@ -72,7 +72,7 @@ export default function FriendList() {
 								sendPushNotification(friend.friend_id, "Remindful", `${connectedUsername} pense à toi!`);
 							}}
 						>
-							<Icon name="bell" style={tw`dark:text-white ml-2 text-3xl`} />
+							<Icon name="bell" style={tw`dark:text-white ml-1.5 text-3xl`} />
 						</TouchableOpacity>
 					</View>
 				)}

@@ -30,12 +30,11 @@ export default function Index() {
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<View style={tw`pt-10 flex-1 items-start w-full justify-start bg-background dark:bg-dark-background dark:text-white`}>
+			<View style={tw`flex-1 pt-10 items-center dark:bg-black`}>
+				<Text style={tw`h2 font-bold dark:text-white`}>Home</Text>
 				<View style={tw`flex-1 w-full items-center p-2`}>
-					<View style={tw`w-full mt-2 `}>
-						<Text style={tw`h2 font-bold mb-2 dark:text-white self-center mx-auto`}>Home</Text>
-					</View>
-					<View style={tw`flex-row justify-end w-full`}>
+
+					<View style={tw`flex-row justify-end w-full `}>
 						<TouchableOpacity
 							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center text-white`}
 							onPress={toggleAddFriendModalVisibility}
@@ -43,7 +42,7 @@ export default function Index() {
 							<Icon name="plus" style={tw`text-white dark:text-white text-3xl`} />
 						</TouchableOpacity>
 					</View>
-					<View style={tw`flex-1 w-full`}>
+					<View style={tw`flex-1 w-full pl-2`}>
 						<FriendList />
 						<FriendRequests />
 					</View>
