@@ -193,7 +193,7 @@ export default function Profile() {
 
      return (
           <SafeAreaView style={tw`flex-1  items-center dark:bg-black`}>
-               <Text style={tw`p-4 text-2xl font-bold dark:text-white`}>Profile</Text>
+               <Text style={tw` h2 font-bold dark:text-white`}>Profile</Text>
                <View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
                     <View style={tw`flex-row items-center`}>
                          <TouchableOpacity
