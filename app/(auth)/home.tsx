@@ -8,6 +8,7 @@ import {
 	TextInput,
 	TouchableWithoutFeedback,
 	Keyboard,
+	SafeAreaView,
 } from "react-native";
 
 import AddFriend from "../../components/friends/addFriend";
@@ -30,10 +31,9 @@ export default function Index() {
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<View style={tw`flex-1 pt-10 items-center dark:bg-black`}>
-				<Text style={tw`h2 font-bold dark:text-white`}>Home</Text>
-				<View style={tw`flex-1 w-full items-center p-2`}>
-
+			<SafeAreaView style={tw`pt-10 flex-1 items-start w-full justify-start bg-dark-background dark:bg-dark-background dark:text-white`}>
+				<Text style={tw`h2 font-bold mb-2 dark:text-white self-center mx-auto`}>Home</Text>
+				<View style={tw`flex-1 w-full items-center m-2 p-2`}>
 					<View style={tw`flex-row justify-end w-full `}>
 						<TouchableOpacity
 							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center text-white`}
@@ -42,7 +42,7 @@ export default function Index() {
 							<Icon name="plus" style={tw`text-white dark:text-white text-3xl`} />
 						</TouchableOpacity>
 					</View>
-					<View style={tw`flex-1 w-full pl-2`}>
+					<View style={tw`flex-1 w-full`}>
 						<FriendList />
 						<FriendRequests />
 					</View>
@@ -56,13 +56,13 @@ export default function Index() {
 
 					<TouchableWithoutFeedback onPress={handleBackgroundPress}>
 						<View style={tw`flex-1 justify-end items-center`}>
-							<View style={tw`bg-neutral-800 p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-md w-full`}>
+							<View style={tw`bg-primary p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-md w-full`}>
 								<AddFriend />
 							</View>
 						</View>
 					</TouchableWithoutFeedback>
 				</Modal>
-			</View>
+			</SafeAreaView>
 		</TouchableWithoutFeedback>
 	);
 }

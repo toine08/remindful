@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, Image, ActivityIndicator, SafeAreaView } from "react-native";
+import { Text, View, TouchableOpacity, ActivityIndicator, SafeAreaView } from "react-native";
 import { useSupabase } from "@/hooks/useSupabase";
 import { supabase } from "@/config/supabase";
 import tw from "@/lib/tailwind";
@@ -10,20 +10,21 @@ import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
-
+import { Image } from 'expo-image';
 
 
 
 export default function Profile() {
      const { signOut, user } = useSupabase();
-     const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) || "ya rien ";
+     const pictureProfile = supabase.storage.from('avatar').getPublicUrl(`${user?.id}/avatar.png`) ?? ""
+     const defaultProfile = supabase.storage.from('avatar').getPublicUrl('default.png') ?? console.log("error")
 
      const [username, setUsername] = useState<string | null>(null);
      const [firstName, setFirstName] = useState<string | null>(null);
      const [lastName, setLastName] = useState<string | null>(null);
      const [tokenUpdated, setTokenUpdated] = useState(false);
      const [isLoading, setIsLoading] = useState(false);
-     const [imagePath, setImagePath] = useState(null);
+     const [imagePath, setImagePath] = useState();
      const [firstNameValue, setFirstNameValue] = useState(firstName);
      const [lastNameValue, setLastNameValue] = useState(lastName);
 
@@ -206,6 +207,7 @@ export default function Profile() {
                                    <Image
                                         source={{ uri: imagePath }}
                                         style={tw`h-30 w-30 rounded-full`}
+                                        onError={() => setImagePath(defaultProfile?.data?.publicUrl || 'fallbackImageUrl')}
                                    />
                               )}
                          </TouchableOpacity>
