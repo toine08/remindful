@@ -20,7 +20,6 @@ import { Button } from "@/components/ui";
 
 export default function Index() {
 	const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
-	const [selectedUser, setSelectedUser] = useState(null);
 
 
 	const toggleAddFriendModalVisibility = () => {
