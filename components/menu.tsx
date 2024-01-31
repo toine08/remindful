@@ -1,4 +1,4 @@
-import { SafeAreaView, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, TouchableOpacity, View, Text } from "react-native";
 import { Link } from "expo-router";
 import tw from "@/lib/tailwind";
 import Icon from "react-native-vector-icons/Feather";
@@ -22,12 +22,14 @@ export default function Menu() {
 			<TouchableOpacity activeOpacity={1}>
 				<Link href="(auth)/notification" style={tw`items-center`}>
 					<Icon name="users" size={25} />
+					<Text>he</Text>
 				</Link>
 			</TouchableOpacity>
 
 			<TouchableOpacity activeOpacity={1}>
 				<Link href="(auth)/profile" style={tw`items-center`}>
 					<Icon name="user" size={25} />
+					<Text>he</Text>
 				</Link>
 			</TouchableOpacity>
 		</SafeAreaView>
