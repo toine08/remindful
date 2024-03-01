@@ -2,9 +2,14 @@
   "expo": {
     "name": "Remindful",
     "slug": "Remindful",
-    "scheme": "com.supabase",
+    "scheme": "xyz.remindfulapp",
     "version": "1.0.0",
     "orientation": "portrait",
+    "plateforms":[
+      "ios",
+      "android",
+      "web"
+    ],
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
