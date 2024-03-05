@@ -1,13 +1,12 @@
 import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants'; // depreciated use expo-device
-import { Platform } from 'react-native';
+import * as Device from 'expo-device';import { Platform } from 'react-native';
 import { supabase } from '@/config/supabase';
 
 const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;
 
 export async function registerForPushNotifications() {
   let token;
-  if (Constants.isDevice) //<-- no more constants but Device.isDevice 
+  if (Device.isDevice)
   {
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
