@@ -5,6 +5,11 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./*"]
-		}
+		},
+		"esModuleInterop": true,
+		"moduleResolution": "node"
+	},
+	"paths": {
+		"react-hook-form": ["./node_modules/react-hook-form"]
 	}
 }

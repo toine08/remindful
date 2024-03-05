@@ -12,8 +12,18 @@ module.exports = function (api) {
 						"@": ".",
 					},
 				},
+				"first-instance",
 			],
+
 			"react-native-reanimated/plugin",
+
+			[
+				"module-resolver",
+				{
+					extensions: [".ts", ".tsx"],
+				},
+				"ts-extensions",
+			],
 		],
 	};
 };
