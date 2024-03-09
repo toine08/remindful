@@ -1,4 +1,4 @@
-import { SafeAreaView, TouchableOpacity, View, Text } from "react-native";
+import { SafeAreaView, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 import tw from "@/lib/tailwind";
 import Icon from "react-native-vector-icons/Feather";
