@@ -41,8 +41,7 @@
       "tsconfigPaths": true
     },
     "plugins": [
-      "expo-router",
-      "expo-secure-store"
+      "expo-router"
     ],
     "extra": {
       "router": {
