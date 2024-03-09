@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
-import { useForm } from "react-hook-form";
-import { Controller } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as z from "zod";

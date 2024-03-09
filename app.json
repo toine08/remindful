@@ -17,6 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "xyz.remdinful.app",
       "config": {
         "usesNonExemptEncryption": false
       }
