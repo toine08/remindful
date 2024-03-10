@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
-import { Text, View, TouchableWithoutFeedback, TouchableOpacity, FlatList, Pressable, Modal } from "react-native";
-import { useSupabase } from "@/hooks/useSupabase";
-import { supabase } from "@/config/supabase";
-import tw from "@/lib/tailwind";
-import { getUsername, getConnectedUsername } from "@/lib/utils";
-import { sendPushNotification } from "@/lib/notifications";
+import {
+	Text,
+	View,
+	TouchableWithoutFeedback,
+	TouchableOpacity,
+	FlatList,
+	Pressable,
+	Modal,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-
+import { supabase } from "@/config/supabase";
+import { useSupabase } from "@/hooks/useSupabase";
+import { sendPushNotification } from "@/lib/notifications";
+import tw from "@/lib/tailwind";
+import { getUsername, getConnectedUsername } from "@/lib/utils";
 
 type Friend = {
 	friend_id: string;
@@ -17,17 +24,16 @@ type Friend = {
 	username: string; // Add the 'username' property to the Friend type
 };
 
-
-
 export default function FriendList() {
 	const { user } = useSupabase();
 	const [friends, setFriends] = useState<Friend[]>([]);
-	const [connectedUsername, setConnectedUsername] = useState('');
-
+	const [connectedUsername, setConnectedUsername] = useState("");
 
 	useEffect(() => {
 		getFriends();
-		getConnectedUsername(user?.id).then(connectedUsername => setConnectedUsername(connectedUsername || ''));
+		getConnectedUsername(user?.id).then((connectedUsername) =>
+			setConnectedUsername(connectedUsername || ""),
+		);
 	}, []);
 
 	async function getFriends() {
@@ -41,20 +47,19 @@ export default function FriendList() {
 		if (error) {
 			console.log("Error fetching friends:", error.message);
 		} else if (friends) {
-			for (let friend of friends) {
+			for (const friend of friends) {
 				const friend_id =
 					friend.requester === user?.id ? friend.receiver : friend.requester;
 				const username = await getUsername(friend_id);
 				friendsWithUsername.push({
 					...friend,
 					username,
-					friend_id,  // Ajout de friend_id
+					friend_id, // Ajout de friend_id
 				});
 			}
 			setFriends(friendsWithUsername);
 		}
 	}
-
 
 	return (
 		<View style={tw`flex-1 pt-5 dark:bg-dark-background w-full`}>
@@ -62,8 +67,10 @@ export default function FriendList() {
 				data={friends}
 				keyExtractor={(item, index) => index.toString()}
 				renderItem={({ item: friend, index }) => (
-					<View style={tw`${index === 0 ? 'border-t' : ''} border-b border-gray-200 flex-row mr-2 p-4 justify-between`}>
-						<TouchableWithoutFeedback onPress={() => console.log('Pressed!')}>
+					<View
+						style={tw`${index === 0 ? "border-t" : ""} border-b border-gray-200 flex-row mr-2 p-4 justify-between`}
+					>
+						<TouchableWithoutFeedback onPress={() => console.log("Pressed!")}>
 							<View style={tw`flex-row justify-between w-full`}>
 								<Text style={tw`text-xl mb-2 font-bold w-5/6 dark:text-white`}>
 									{friend.username}
@@ -71,7 +78,11 @@ export default function FriendList() {
 								<TouchableOpacity
 									style={tw`flex-row items-center w-1/6`}
 									onPress={() => {
-										sendPushNotification(friend.friend_id, "Remindful", `${connectedUsername} pense à toi!`);
+										sendPushNotification(
+											friend.friend_id,
+											"Remindful",
+											`${connectedUsername} pense à toi!`,
+										);
 									}}
 								>
 									<Icon name="bell" style={tw`dark:text-white ml-6 text-3xl`} />

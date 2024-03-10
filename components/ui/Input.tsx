@@ -7,10 +7,15 @@ import tw from "@/lib/tailwind";
 export interface IInputProps extends React.ComponentProps<typeof TextInput> {
 	error?: string | any;
 	isFocused?: boolean;
-	size?: 'small' | 'medium' | 'large';
+	size?: "small" | "medium" | "large";
 }
 
-export const Input = ({ error, onBlur, size = "medium", ...props }: IInputProps) => {
+export const Input = ({
+	error,
+	onBlur,
+	size = "medium",
+	...props
+}: IInputProps) => {
 	const [colorScheme] = useAppColorScheme(tw);
 	const [isFocused, setIsFocused] = useState(false);
 
@@ -19,7 +24,8 @@ export const Input = ({ error, onBlur, size = "medium", ...props }: IInputProps)
 		onBlur && onBlur(event);
 	};
 
-	const widthStyle = size === 'small' ? tw`w-20` : size === 'large' ? tw`w-60` : tw`w-40`;
+	const widthStyle =
+		size === "small" ? tw`w-20` : size === "large" ? tw`w-60` : tw`w-40`;
 
 	return (
 		<View>

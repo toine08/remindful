@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { useSupabase } from "@/hooks/useSupabase";
+
+import { Button } from "../ui";
+
 import { supabase } from "@/config/supabase";
+import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
 import { handleFriendRequest, getUsername } from "@/lib/utils";
-import { Button } from "../ui";
 
 type FriendRequest = {
 	friend_request_id: number;
@@ -23,12 +25,19 @@ export default function FriendRequests() {
 		getFriendRequests();
 	}, []);
 
-	async function handleRequest(action: "accepted" | "rejected", friendRequestId: number) {
-  		await handleFriendRequest(action, friendRequestId);
-  
-  		// Mettre à jour l'état des demandes pour supprimer la demande traitée
-  		setRequests(requests.filter(request => request.friend_request_id !== friendRequestId));
-}
+	async function handleRequest(
+		action: "accepted" | "rejected",
+		friendRequestId: number,
+	) {
+		await handleFriendRequest(action, friendRequestId);
+
+		// Mettre à jour l'état des demandes pour supprimer la demande traitée
+		setRequests(
+			requests.filter(
+				(request) => request.friend_request_id !== friendRequestId,
+			),
+		);
+	}
 
 	async function getFriendRequests() {
 		try {
@@ -50,7 +59,7 @@ export default function FriendRequests() {
 						...request,
 						username,
 					};
-				})
+				}),
 			);
 
 			setFriendRequests(requests);
@@ -61,8 +70,11 @@ export default function FriendRequests() {
 	}
 	return (
 		<View style={tw``}>
-			{requests.length === 0 ? null : <Text style={tw`h3 font-bold mb-2 dark:text-white`}>Demandes d'amis</Text>}
-
+			{requests.length === 0 ? null : (
+				<Text style={tw`h3 font-bold mb-2 dark:text-white`}>
+					Demandes d'amis
+				</Text>
+			)}
 
 			{requests.map((r) => (
 				<View
@@ -77,15 +89,13 @@ export default function FriendRequests() {
 							label="Confirm"
 							style={tw`mr-2 px-4 py-2 border-2 border-white rounded `}
 							textStyle={tw`text-white`}
-  							onPress={() => handleRequest('accepted', r.friend_request_id)}
-
+							onPress={() => handleRequest("accepted", r.friend_request_id)}
 						/>
 						<Button
 							label="Delete"
 							style={tw`px-4 py-2  border-2 border-red-400 rounded`}
 							textStyle={tw`text-white`}
-  							onPress={() => handleRequest('rejected', r.friend_request_id)}
-
+							onPress={() => handleRequest("rejected", r.friend_request_id)}
 						/>
 					</View>
 				</View>

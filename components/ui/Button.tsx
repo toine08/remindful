@@ -43,7 +43,8 @@ export const Button = ({
 				tw`items-center justify-center rounded-md`,
 				variant === "primary" && tw`bg-primary dark:bg-dark-primary`,
 				variant === "secondary" && tw`bg-secondary dark:bg-dark-secondary`,
-				variant === "destructive" && tw`bg-destructive dark:bg-dark-destructive`,
+				variant === "destructive" &&
+					tw`bg-destructive dark:bg-dark-destructive`,
 				variant === "outline" && tw`border border-input`,
 				variant === "full" && tw`w-60 bg-secondary h-10 `,
 				size === "default" && tw`h-10 px-4 py-2`,
@@ -53,7 +54,7 @@ export const Button = ({
 			])}
 			{...props}
 		>
-			<Text style={[textStyle, { textAlign: 'center' }]}>{label}</Text>
+			<Text style={[textStyle, { textAlign: "center" }]}>{label}</Text>
 		</TouchableOpacity>
 	);
 };

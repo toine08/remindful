@@ -1,15 +1,14 @@
+import { NavigationContainer } from "@react-navigation/native";
 import { Slot, useRouter, useSegments } from "expo-router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useDeviceContext } from "twrnc";
 
+import Menu from "@/components/menu";
 import { SupabaseProvider } from "@/context/SupabaseProvider";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
-import { NavigationContainer } from "@react-navigation/native";
-import React from "react";
-import Menu from "@/components/menu";
 
 const InitialLayout = () => {
 	const { session, initialized } = useSupabase();
