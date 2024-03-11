@@ -11,7 +11,7 @@ export const Label = ({ children, style }: ILabelProps) => {
 	return (
 		<Text
 			style={[
-				tw`text-sm text-primary dark:text-dark-primary font-medium leading-none`,
+				tw`text-sm text-dark-primary dark:text-primary font-medium leading-none`,
 				style,
 			]}
 		>

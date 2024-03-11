@@ -88,13 +88,13 @@ export default function FriendRequests() {
 						<Button
 							label="Confirm"
 							style={tw`mr-2 px-4 py-2 border-2 border-white rounded `}
-							textStyle={tw`text-white`}
+							textStyle={tw`text-dark-foreground dark:text-foreground`}
 							onPress={() => handleRequest("accepted", r.friend_request_id)}
 						/>
 						<Button
 							label="Delete"
 							style={tw`px-4 py-2  border-2 border-red-400 rounded`}
-							textStyle={tw`text-white`}
+							textStyle={tw`text-dark-foreground dark:text-foreground`}
 							onPress={() => handleRequest("rejected", r.friend_request_id)}
 						/>
 					</View>

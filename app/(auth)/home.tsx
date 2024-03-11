@@ -15,7 +15,6 @@ import AddFriend from "../../components/friends/addFriend";
 
 import FriendList from "@/components/friends/friendList";
 import FriendRequests from "@/components/friends/friendRequest";
-import { Button } from "@/components/ui";
 import tw from "@/lib/tailwind";
 
 export default function Index() {
@@ -32,20 +31,20 @@ export default function Index() {
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<SafeAreaView
-				style={tw`pt-10 flex-1 items-start w-full justify-start bg-dark-background dark:bg-dark-background dark:text-white`}
+				style={tw`pt-10 flex-1 items-start w-full justify-start bg-foreground dark:bg-dark-foreground`}
 			>
-				<Text style={tw`h2 font-bold mb-2 dark:text-white self-center mx-auto`}>
+				<Text style={tw`h3 font-bold mb-2 self-center mx-auto`}>
 					Home
 				</Text>
 				<View style={tw`flex-1 w-full items-center m-2 p-2`}>
 					<View style={tw`flex-row justify-end w-full `}>
 						<TouchableOpacity
-							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center text-white`}
+							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center text-foreground dark:text-foreground`}
 							onPress={toggleAddFriendModalVisibility}
 						>
 							<Icon
 								name="plus"
-								style={tw`text-white dark:text-white text-3xl`}
+								style={tw`plus`}
 							/>
 						</TouchableOpacity>
 					</View>

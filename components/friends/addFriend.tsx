@@ -88,13 +88,13 @@ export default function AddFriend() {
 					onFocus={() => setUsername("")}
 					onChangeText={(text) => setUsername(text)}
 					placeholder="username"
-					style={tw`p-2 grow rounded border-2 border-white/10 text-white h-12`}
+					style={tw`p-2 grow rounded border-2 border-white/10 text-dark-foreground dark:text-foreground h-12`}
 				/>
 				<TouchableOpacity
-					style={tw`flex-row items-center rounded w-14 justify-center ml-2 text-white`}
+					style={tw`flex-row items-center rounded w-14 justify-center ml-2 text-foreground dark:text-foreground`}
 					onPress={addFriend}
 				>
-					<Icon name="plus" style={tw`text-white dark:text-white text-xl`} />
+					<Icon name="plus" style={tw`plus`} />
 				</TouchableOpacity>
 			</View>
 		</View>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import {
 	Text,
 	View,
@@ -15,6 +15,7 @@ import { useSupabase } from "@/hooks/useSupabase";
 import { sendPushNotification } from "@/lib/notifications";
 import tw from "@/lib/tailwind";
 import { getUsername, getConnectedUsername } from "@/lib/utils";
+import React from "react";
 
 type Friend = {
 	friend_id: string;
@@ -24,7 +25,7 @@ type Friend = {
 	username: string; // Add the 'username' property to the Friend type
 };
 
-export default function FriendList() {
+function FriendList() {
 	const { user } = useSupabase();
 	const [friends, setFriends] = useState<Friend[]>([]);
 	const [connectedUsername, setConnectedUsername] = useState("");
@@ -54,7 +55,7 @@ export default function FriendList() {
 				friendsWithUsername.push({
 					...friend,
 					username,
-					friend_id, // Ajout de friend_id
+					friend_id,
 				});
 			}
 			setFriends(friendsWithUsername);
@@ -62,17 +63,17 @@ export default function FriendList() {
 	}
 
 	return (
-		<View style={tw`flex-1 pt-5 dark:bg-dark-background w-full`}>
+		<View style={tw`flex-1 pt-5 w-full`}>
 			<FlatList
 				data={friends}
-				keyExtractor={(item, index) => index.toString()}
+				keyExtractor={(item) => item.friend_id }
 				renderItem={({ item: friend, index }) => (
 					<View
-						style={tw`${index === 0 ? "border-t" : ""} border-b border-gray-200 flex-row mr-2 p-4 justify-between`}
+						style={tw`${index === 0 ? "border-t" : ""} border-list`}
 					>
 						<TouchableWithoutFeedback onPress={() => console.log("Pressed!")}>
 							<View style={tw`flex-row justify-between w-full`}>
-								<Text style={tw`text-xl mb-2 font-bold w-5/6 dark:text-white`}>
+								<Text style={tw`text-xl text-dark-foreground dark:text-foreground mb-2 font-bold w-5/6`}>
 									{friend.username}
 								</Text>
 								<TouchableOpacity
@@ -85,14 +86,16 @@ export default function FriendList() {
 										);
 									}}
 								>
-									<Icon name="bell" style={tw`dark:text-white ml-6 text-3xl`} />
+									<Icon name="bell" style={tw`bell`} />
 								</TouchableOpacity>
 							</View>
 						</TouchableWithoutFeedback>
 					</View>
 				)}
-				ListFooterComponent={<View style={{ height: 100 }} />} // Ajoutez un espace supplémentaire à la fin
+				ListFooterComponent={<View style={{ height: 100 }} />}
 			/>
 		</View>
 	);
 }
+
+export default React.memo(FriendList);

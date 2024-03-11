@@ -42,11 +42,11 @@ export const Button = ({
 			style={StyleSheet.flatten([
 				tw`items-center justify-center rounded-md`,
 				variant === "primary" && tw`bg-primary dark:bg-dark-primary`,
-				variant === "secondary" && tw`bg-secondary dark:bg-dark-secondary`,
+				variant === "secondary" && tw`bg-dark-secondary dark:bg-secondary`,
 				variant === "destructive" &&
 					tw`bg-destructive dark:bg-dark-destructive`,
 				variant === "outline" && tw`border border-input`,
-				variant === "full" && tw`w-60 bg-secondary h-10 `,
+				variant === "full" && tw`w-60 bg-secondary h-10`,
 				size === "default" && tw`h-10 px-4 py-2`,
 				size === "sm" && tw`h-9 px-3 rounded-md`,
 				size === "lg" && tw`h-11 px-8 rounded-md`,

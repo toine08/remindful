@@ -19,6 +19,7 @@ import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
 import { updatePushToken, getUsername } from "@/lib/utils";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
@@ -192,8 +193,16 @@ export default function Profile() {
 	}
 
 	return (
-		<SafeAreaView style={tw`flex-1 items-center dark:bg-black`}>
-			<Text style={tw`h2 font-bold dark:text-white`}>Profile</Text>
+		<SafeAreaView style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground`}>
+			<View style={tw`flex-row justify-between items-center space-x-10 w-full px-5`}>
+				<View></View>
+				<Text style={tw`h3 font-bold text-dark-foreground dark:text-foreground`}>Profile</Text>
+				<Icon
+								name="sign-out"
+								style={tw`plus`}
+							/>
+			</View>
+
 			<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
 				<View style={tw`flex-row items-center`}>
 					<TouchableOpacity
@@ -214,7 +223,7 @@ export default function Profile() {
 							/>
 						)}
 					</TouchableOpacity>
-					<Text style={tw`ml-4 text-2xl font-bold dark:text-white`}>
+					<Text style={tw`ml-4 text-2xl font-bold text-dark-foreground dark:text-foreground`}>
 						{username}
 					</Text>
 				</View>

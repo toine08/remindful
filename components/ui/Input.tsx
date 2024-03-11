@@ -31,7 +31,7 @@ export const Input = ({
 		<View>
 			<TextInput
 				style={[
-					tw`flex h-10 items-center rounded-md text-foreground dark:text-dark-foreground border border-input dark:border-dark-input bg-transparent px-3 py-2 text-sm leading-[0px]`,
+					tw`flex h-10 items-center rounded-md text-dark-foreground dark:text-foreground border border-input dark:border-dark-input bg-transparent px-3 py-2 text-sm leading-[0px]`,
 					widthStyle,
 					isFocused && tw`border-primary dark:border-dark-primary`,
 					error && tw`border-destructive dark:border-dark-destructive`,
