@@ -15,20 +15,19 @@ module.exports = {
 				"primary-foreground": "hsl(201, 0%, 100%)",
 				secondary: "hsl(225, 84.9%, 52.9%)", // new secondary color for light mode
 				"secondary-foreground": "hsl(0, 0%, 26.7%)", // or any other suitable dark value for
-				"text-secondary": "hsl(0, 0%, 63.9%)",
+				"text-secondary": "hsl(0, 0%, 89.8%)",
 				input: "hsl(0, 0%, 89.8%)",
 				ring: "hsl(0, 0%, 3.9%)",
 				"text-foreground": "hsl(0, 0%, 25%)",
-				muted: "hsl(0, 0%, 96.1%)",
-	            "muted-foreground": "hsl(0, 0%, 45.1%)",
+				muted: "hsl(0, 0%, 89.8%)",
+	            "muted-foreground": "hsl(0, 0%, 10.2%)",
 				accent: "hsl(0, 0%, 96.1%)",
                 "accent-foreground": "hsl(0, 0%, 9%)",
                 destructive: "hsl(0, 84.2%, 60.2%)",
                 "destructive-foreground": "hsl(0, 0%, 98%)",
 				// Dark
-				"text-dark-foreground": "hsl(60, 100%, 15%)", // or any other suitable light value for
 				"dark-background": "hsl(210, 0%, 85%)",
-				"dark-foreground": "hsl(0, 0%, 15%)",
+				"dark-foreground": "hsl(0, 0%, 20%)",
 				"dark-card": "hsl(0, 0%, 3.9%)",
 				"dark-card-foreground": "hsl(201, 0%, 85%)",
 				"dark-popover": "hsl(210, 4.6%, 87.4%)", // or any other suitable light value for
@@ -41,8 +40,9 @@ module.exports = {
 				"dark-muted-foreground": "hsl(0, 0%, 77.3%)", // or any other suitable light value
 				"dark-accent": "hsl(225, 87.1%, 51.4%)",
 				"dark-accent-foreground": "hsl(0, 0%, 98%)",
-				"dark-destructive": "hsl(36, 124.1%, 57.6%)",
-				"dark-destructive-foreground": "hsl(0, 0%, 98%)",
+				"dark-destructive": "hsl(0, 84.2%, 60.2%)",
+				"dark-destructive-foreground": "hsl(0, 84.2%, 60.2%)",
+				"dark-border": "hsl(0, 0%, 14.9%)",
 				"dark-input": "hsl(0, 0%, 29.8%)",
 				"dark-ring": "hsl(0, 0%, 56.3%)",
 			},
@@ -61,9 +61,11 @@ module.exports = {
 				large: `text-lg text-foreground dark:text-dark-foreground font-semibold`,
 				small: `text-sm text-foreground dark:text-dark-foreground font-medium leading-[0px]`,
 				muted: `text-sm text-muted-foreground dark:text-dark-muted-foreground`,
-				bell: `ml-6 text-3xl text-secondary font-semibold`,
-				plus:`text-foreground text-secondary text-3xl`,
+				bell: `ml-6 text-3xl text-primary dark:text-dark-primary font-semibold`,
+				plus:`text-primary dark:text-dark-primary text-3xl`,
 				"border-list": `border-b border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between`,
+				"border-login": `border rounded-lg border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between`,
+				"border-input":`min-w-60 p-2 rounded border border-primary dark:border-dark-primary text-dark-foreground dark:text-foreground h-12`,
 			});
 		}),
 	],

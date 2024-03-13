@@ -46,7 +46,7 @@ export const Button = ({
 				variant === "destructive" &&
 					tw`bg-destructive dark:bg-dark-destructive`,
 				variant === "outline" && tw`border border-input`,
-				variant === "full" && tw`w-60 bg-secondary h-10`,
+				variant === "full" && tw`w-60 bg-primary dark:bg-dark-primary h-10`,
 				size === "default" && tw`h-10 px-4 py-2`,
 				size === "sm" && tw`h-9 px-3 rounded-md`,
 				size === "lg" && tw`h-11 px-8 rounded-md`,

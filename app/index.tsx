@@ -40,15 +40,15 @@ export default function Login() {
 
 	return (
 		<SafeAreaView
-			style={tw`flex-1 items-center bg-background dark:bg-dark-background p-4`}
+			style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground p-5`}
 		>
 			<Text
-				style={tw`h1 text-foreground dark:text-dark-foreground self-start mb-5`}
+				style={tw`h1 text-dark-foreground dark:text-foreground self-start mb-5`}
 			>
 				Remindful
 			</Text>
 			<Text
-				style={tw`h2 text-foreground dark:text-dark-foreground self-start mb-5`}
+				style={tw`h3 text-dark-foreground dark:text-foreground self-start mb-5`}
 			>
 				Login
 			</Text>
@@ -71,7 +71,8 @@ export default function Login() {
 								autoComplete="email"
 								autoCorrect={false}
 								keyboardType="email-address"
-								style={tw`text-black dark:text-white`}
+								style={tw`border-login text-dark-foreground dark:text-foreground`}
+								
 							/>
 							{errors.email && (
 								<FormMessage>{errors.email?.message}</FormMessage>
@@ -86,7 +87,6 @@ export default function Login() {
 						<View style={tw`gap-1.5`}>
 							<FormLabel errors={errors.password}>Password</FormLabel>
 							<Input
-								style={tw`text-black dark:text-white`}
 								placeholder="Password"
 								value={value}
 								onChangeText={onChange}
@@ -97,9 +97,11 @@ export default function Login() {
 								autoCapitalize="none"
 								autoCorrect={false}
 								secureTextEntry
+								style={tw` border-login text-dark-foreground dark:text-foreground`}
+
 							/>
 							{errors.password && (
-								<FormMessage>{errors.password?.message}</FormMessage>
+								<FormMessage style={""}>{errors.password?.message}</FormMessage>
 							)}
 						</View>
 					)}
@@ -112,7 +114,7 @@ export default function Login() {
 					isLoading={isSubmitting}
 				/>
 				<Text
-					style={tw`muted text-center`}
+					style={tw`muted text-center underline`}
 					onPress={() => {
 						router.push("/signup");
 					}}

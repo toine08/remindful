@@ -33,7 +33,7 @@ export default function Index() {
 			<SafeAreaView
 				style={tw`pt-10 flex-1 items-start w-full justify-start bg-foreground dark:bg-dark-foreground`}
 			>
-				<Text style={tw`h3 font-bold mb-2 self-center mx-auto`}>
+				<Text style={tw`h3 font-bold mb-2 self-center mx-auto text-dark-foreground dark:text-foreground`}>
 					Home
 				</Text>
 				<View style={tw`flex-1 w-full items-center m-2 p-2`}>
@@ -62,7 +62,7 @@ export default function Index() {
 					<TouchableWithoutFeedback onPress={handleBackgroundPress}>
 						<View style={tw`flex-1 justify-end items-center`}>
 							<View
-								style={tw`bg-primary p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-md w-full`}
+								style={tw`bg-foreground  dark:bg-dark-foreground p-4 h-50 h-150 pb-10 rounded-lg justify-between shadow-lg w-full`}
 							>
 								<AddFriend />
 							</View>

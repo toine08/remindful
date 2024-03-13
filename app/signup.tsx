@@ -132,10 +132,10 @@ export default function SignUp() {
 
 	return (
 		<SafeAreaView
-			style={tw`flex-1 items-center bg-background dark:bg-dark-background p-4`}
+			style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground p-5`}
 		>
-			<Text style={tw`h1 self-start mb-5`}>Remindful</Text>
-			<Text style={tw`h2 self-start mb-5`}>SignUp</Text>
+			<Text style={tw`h1 self-start mb-5 text-dark-foreground dark:text-foreground`}>Remindful</Text>
+			<Text style={tw`h3 self-start mb-5 text-dark-foreground dark:text-foreground`}>SignUp</Text>
 			<View style={tw`w-full gap-4`}>
 				<Controller
 					name="username"
@@ -149,6 +149,7 @@ export default function SignUp() {
 									console.log("Username:", value);
 									field.onChange(value);
 								}}
+								style={tw`border-login text-dark-foreground dark:text-foreground`}
 								placeholder="Username"
 							/>
 							{errors.username && (
@@ -176,6 +177,8 @@ export default function SignUp() {
 								autoComplete="email"
 								autoCorrect={false}
 								keyboardType="email-address"
+								style={tw`border-login text-dark-foreground dark:text-foreground`}
+
 							/>
 							{errors.email && (
 								<FormMessage>{errors.email?.message}</FormMessage>
@@ -200,6 +203,8 @@ export default function SignUp() {
 								autoCapitalize="none"
 								autoCorrect={false}
 								secureTextEntry
+								style={tw`border-login text-dark-foreground dark:text-foreground`}
+
 							/>
 							{errors.password && (
 								<FormMessage>{errors.password?.message}</FormMessage>
@@ -226,6 +231,8 @@ export default function SignUp() {
 								autoCapitalize="none"
 								autoCorrect={false}
 								secureTextEntry
+								style={tw`border-login text-white dark:text-foreground`}
+
 							/>
 							{errors.confirmPassword && (
 								<FormMessage>{errors.confirmPassword?.message}</FormMessage>
@@ -241,7 +248,7 @@ export default function SignUp() {
 					isLoading={isSubmitting}
 				/>
 				<Text
-					style={tw`muted text-center`}
+					style={tw`muted text-center underline`}
 					onPress={() => {
 						router.back();
 					}}

@@ -11,7 +11,7 @@ export const FormMessage = ({ children, style }: IFormMessageProps) => {
 	return (
 		<Text
 			style={[
-				tw`text-sm font-medium text-destructive dark:text-dark-destructive`,
+				tw`text-sm font-extrabold text-destructive dark:text-dark-destructive`,
 				style,
 			]}
 		>

@@ -14,7 +14,7 @@ export default function Menu() {
 
 	return (
 		<SafeAreaView
-			style={tw`flex-row items-center justify-around h-1/9 w-full bg-primary dark:bg-dark-background dark:dark-primary-text bottom-0 z-50`}
+			style={tw`flex-row items-center justify-around h-1/9 w-full bg-primary dark:bg-dark-primary dark:text-dark-primary bottom-0 z-50`}
 		>
 			<TouchableOpacity activeOpacity={1}>
 				<Link href="(auth)/home" style={tw` items-center`}>

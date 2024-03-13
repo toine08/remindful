@@ -194,13 +194,18 @@ export default function Profile() {
 
 	return (
 		<SafeAreaView style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground`}>
-			<View style={tw`flex-row justify-between items-center space-x-10 w-full px-5`}>
+			<View style={tw`flex-row justify-between items-center w-full px-5`}>
 				<View></View>
-				<Text style={tw`h3 font-bold text-dark-foreground dark:text-foreground`}>Profile</Text>
+				<Text style={tw` -mr-6 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}>Profile</Text>
+				<TouchableOpacity
+				onPress={signOut}>
+					
 				<Icon
 								name="sign-out"
 								style={tw`plus`}
 							/>
+				</TouchableOpacity>
+				
 			</View>
 
 			<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
@@ -233,12 +238,14 @@ export default function Profile() {
 						placeholder={firstName ?? "Firstname"}
 						value={firstNameValue ?? ""}
 						onChangeText={setFirstNameValue}
+						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
 					<Input
 						size="large"
 						placeholder={lastName ?? "Lastname"}
 						value={lastNameValue ?? ""}
 						onChangeText={setLastNameValue}
+						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
 				</View>
 				<Button
