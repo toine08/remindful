@@ -31,7 +31,7 @@ export const Input = ({
 		<View>
 			<TextInput
 				style={[
-					tw`border rounded-lg border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between`,
+					tw`border text-dark-foreground rounded-lg border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between min-w-80 dark:text-foreground`,
 					widthStyle,
 					isFocused && tw` border-primary dark:border-dark-primary`,
 					error && tw`border-destructive dark:border-dark-destructive`,

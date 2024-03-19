@@ -71,7 +71,6 @@ export default function Login() {
 								autoComplete="email"
 								autoCorrect={false}
 								keyboardType="email-address"
-								style={tw`border-login text-dark-foreground dark:text-foreground`}
 								
 							/>
 							{errors.email && (
@@ -97,8 +96,6 @@ export default function Login() {
 								autoCapitalize="none"
 								autoCorrect={false}
 								secureTextEntry
-								style={tw` border-login text-dark-foreground dark:text-foreground`}
-
 							/>
 							{errors.password && (
 								<FormMessage style={""}>{errors.password?.message}</FormMessage>

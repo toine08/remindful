@@ -176,8 +176,6 @@ export default function SignUp() {
 								autoComplete="email"
 								autoCorrect={false}
 								keyboardType="email-address"
-								style={tw`border-login text-dark-foreground dark:text-foreground`}
-
 							/>
 							{errors.email && (
 								<FormMessage>{errors.email?.message}</FormMessage>
@@ -202,7 +200,6 @@ export default function SignUp() {
 								autoCapitalize="none"
 								autoCorrect={false}
 								secureTextEntry
-								style={tw`border-login text-dark-foreground dark:text-foreground`}
 
 							/>
 							{errors.password && (
@@ -230,8 +227,6 @@ export default function SignUp() {
 								autoCapitalize="none"
 								autoCorrect={false}
 								secureTextEntry
-								style={tw`border-login text-white dark:text-foreground`}
-
 							/>
 							{errors.confirmPassword && (
 								<FormMessage>{errors.confirmPassword?.message}</FormMessage>
