@@ -36,7 +36,7 @@ export async function registerForPushNotifications() {
 	return token;
 }
 
-async function hasSentNotificationInTheLastHour(sender: string, receiver: string) {
+export async function hasSentNotificationInTheLastHour(sender: string, receiver: string) {
 	const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000);
 	tenMinAgo.setHours(tenMinAgo.getHours() - 1); // adjust for UTC+1
   
@@ -47,9 +47,13 @@ async function hasSentNotificationInTheLastHour(sender: string, receiver: string
 	  .eq("receiver_id", receiver)
 	  .gte("sent_at", tenMinAgo);
   
-	return notifications && notifications.length > 0;
+	// Check if notifications is null or undefined before accessing its properties
+	if (notifications === null || notifications === undefined) {
+	  return false;
+	}
+  
+	return notifications.length > 0;
   }
-
 export async function sendPushNotification(
 	userId: string,
 	title: string,
