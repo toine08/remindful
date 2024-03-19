@@ -149,7 +149,6 @@ export default function SignUp() {
 									console.log("Username:", value);
 									field.onChange(value);
 								}}
-								style={tw`border-login text-dark-foreground dark:text-foreground`}
 								placeholder="Username"
 							/>
 							{errors.username && (

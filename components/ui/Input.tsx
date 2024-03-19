@@ -31,9 +31,9 @@ export const Input = ({
 		<View>
 			<TextInput
 				style={[
-					tw`flex h-10 items-center rounded-md text-dark-foreground dark:text-foreground border-input dark:border-dark-input bg-transparent px-3 py-5 text-sm leading-[0px] border min-w-60`,
+					tw`border rounded-lg border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between`,
 					widthStyle,
-					isFocused && tw`dark:text-dark-primary border-primary dark:border-dark-primary`,
+					isFocused && tw` border-primary dark:border-dark-primary`,
 					error && tw`border-destructive dark:border-dark-destructive`,
 				]}
 				placeholderTextColor={
