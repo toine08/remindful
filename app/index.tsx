@@ -98,7 +98,7 @@ export default function Login() {
 								secureTextEntry
 							/>
 							{errors.password && (
-								<FormMessage style={""}>{errors.password?.message}</FormMessage>
+								<FormMessage>{errors.password?.message}</FormMessage>
 							)}
 						</View>
 					)}

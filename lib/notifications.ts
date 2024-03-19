@@ -36,17 +36,38 @@ export async function registerForPushNotifications() {
 	return token;
 }
 
-export const sendPushNotification = async (
+async function hasSentNotificationInTheLastHour(sender: string, receiver: string) {
+	const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000);
+	tenMinAgo.setHours(tenMinAgo.getHours() - 1); // adjust for UTC+1
+  
+	const { data: notifications } = await supabase
+	  .from("notifications")
+	  .select("*")
+	  .eq("sender_id", sender)
+	  .eq("receiver_id", receiver)
+	  .gte("sent_at", tenMinAgo);
+  
+	return notifications && notifications.length > 0;
+  }
+
+export async function sendPushNotification(
 	userId: string,
 	title: string,
 	body: string,
-) => {
+	receiver: string,
+) {
 	// Récupérer le jeton de notification push de l'utilisateur
 	const { data: user, error } = await supabase
 		.from("profiles")
 		.select("push_token")
 		.eq("id", userId)
 		.single();
+
+	//check notifications time
+	if (await hasSentNotificationInTheLastHour(userId, receiver)) {
+		alert("A notification was already sent within the last hour.");
+		return;
+	}
 
 	if (error || !user?.push_token) {
 		console.log("Erreur lors de la récupération du jeton push :", error);
@@ -73,9 +94,17 @@ export const sendPushNotification = async (
 			},
 			body: JSON.stringify(message),
 		});
+		if (response.ok) {
+			const { data, error } = await supabase
+				.from("notifications")
+				.insert([{ sender_id: userId, receiver_id: receiver }])
+				.select();
+			console.log("data insert in notif", new Date())
+		}
 
 		if (!response.ok) {
 			const text = await response.text();
+			alert("Failed to send push notification");
 			throw new Error(`HTTP error! status: ${response.status} ${text}`);
 		}
 
@@ -84,4 +113,4 @@ export const sendPushNotification = async (
 	} catch (error) {
 		console.log("Erreur lors de l'envoi de la notification :", error);
 	}
-};
+}

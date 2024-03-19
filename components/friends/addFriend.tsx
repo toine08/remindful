@@ -13,7 +13,7 @@ export default function AddFriend() {
 	const [connectedUsername, setConnectedUsername] = useState("");
 	const { user } = useSupabase();
 	const connectedUser = user;
-	const inputRef = useRef();
+	const inputRef = useRef<TextInput>(null);
 
 	useEffect(() => {
 		getConnectedUsername(user?.id).then((connectedUsername) =>
@@ -74,6 +74,7 @@ export default function AddFriend() {
 				data.id,
 				"Friend request",
 				`${connectedUsername} sent you a friend request!`,
+				user?.id || ""
 			);
 		}, 3000);
 	}

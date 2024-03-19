@@ -35,7 +35,7 @@ export default function Profile() {
 	const [lastName, setLastName] = useState<string | null>(null);
 	const [tokenUpdated, setTokenUpdated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [imagePath, setImagePath] = useState();
+	const [imagePath, setImagePath] = useState<string>('');
 	const [firstNameValue, setFirstNameValue] = useState(firstName);
 	const [lastNameValue, setLastNameValue] = useState(lastName);
 

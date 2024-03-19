@@ -146,7 +146,6 @@ export default function SignUp() {
 							<Input
 								value={field.value}
 								onChangeText={(value) => {
-									console.log("Username:", value);
 									field.onChange(value);
 								}}
 								placeholder="Username"

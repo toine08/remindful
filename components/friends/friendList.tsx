@@ -83,6 +83,7 @@ function FriendList() {
 											friend.friend_id,
 											"Remindful",
 											`${connectedUsername} pense à toi!`,
+											user?.id || ""
 										);
 									}}
 								>
