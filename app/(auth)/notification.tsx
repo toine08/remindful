@@ -108,7 +108,7 @@ function NotificationsList() {
         renderItem={renderNotification}
         ListFooterComponent={renderFooter}
         onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.2}
 		
       />
 	  </View>
