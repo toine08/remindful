@@ -65,7 +65,7 @@ export default function FriendRequests() {
 			setFriendRequests(requests);
 			setRequests(requestsWithUsername);
 		} catch (error) {
-			console.log("Error fetching friend requests:", error.message);
+			console.log("Error fetching friend requests:", error);
 		}
 	}
 	return (

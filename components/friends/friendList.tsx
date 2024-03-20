@@ -78,10 +78,10 @@ function FriendList() {
 									style={tw`flex-row items-center w-1/6`}
 									onPress={() => {
 										sendPushNotification(
-											friend.friend_id,
+											user?.id || "",
 											"Remindful",
 											`${connectedUsername} pense à toi!`,
-											user?.id || ""
+											friend.friend_id,
 										);
 									}}
 								>

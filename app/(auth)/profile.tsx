@@ -211,7 +211,7 @@ export default function Profile() {
 			<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
 				<View style={tw`flex-row items-center`}>
 					<TouchableOpacity
-						onPress={() => console.log("small press")}
+						onPress={() => console.log(user?.id)}
 						onLongPress={uploadAvatar}
 					>
 						{isLoading ? (
