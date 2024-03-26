@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 const { plugin } = require("twrnc");
+const { getRandomColor } = require('./lib/utils');
 module.exports = {
 	content: [],
 	theme: {
 		extend: {
 			colors: {
+				randomColor: getRandomColor(),
 				background: "hsl(132, 50%, 94%)", // #638475 => hsl(132, 50%, 94%)
 				foreground: "hsl(49, 37%, 94%)",
 				card: "hsl(135, 71%, 97.6%)", // #90E39A => hsl(135, 71%, 97.6%)

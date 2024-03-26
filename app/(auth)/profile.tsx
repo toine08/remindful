@@ -23,13 +23,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
-	const pictureProfile =
-		supabase.storage.from("avatar").getPublicUrl(`${user?.id}/avatar.png`) ??
-		"";
-	const defaultProfile =
-		supabase.storage.from("avatar").getPublicUrl("default.png") ??
-		console.log("error");
-
 	const [username, setUsername] = useState<string | null>(null);
 	const [firstName, setFirstName] = useState<string | null>(null);
 	const [lastName, setLastName] = useState<string | null>(null);
@@ -38,6 +31,8 @@ export default function Profile() {
 	const [imagePath, setImagePath] = useState<string>('');
 	const [firstNameValue, setFirstNameValue] = useState(firstName);
 	const [lastNameValue, setLastNameValue] = useState(lastName);
+	const { data } = supabase.storage.from("avatar").getPublicUrl(`${user?.id}/avatar.png`);
+    const avatarUrl = data?.publicUrl;
 
 	const handleUpdateInfos = () => {
 		if (firstNameValue !== null) {
@@ -67,10 +62,7 @@ export default function Profile() {
 			});
 		}
 
-		downloadImage(pictureProfile.data.publicUrl)
-			.then(setImagePath)
-			.catch(console.error);
-	}, [user, tokenUpdated, pictureProfile.data.publicUrl]);
+	}, [user, tokenUpdated]);
 
 	const downloadImage = async (url: string) => {
 		const filename = url.substring(url.lastIndexOf("/") + 1);
@@ -193,19 +185,19 @@ export default function Profile() {
 	}
 
 	return (
-		<SafeAreaView style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground`}>
+		<SafeAreaView
+			style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground`}
+		>
 			<View style={tw`flex-row justify-between items-center w-full px-5`}>
-				<View></View>
-				<Text style={tw` -mr-6 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}>Profile</Text>
-				<TouchableOpacity
-				onPress={signOut}>
-					
-				<Icon
-								name="sign-out"
-								style={tw`plus`}
-							/>
+				<Icon name="info-circle" style={tw`plus`} />
+				<Text
+					style={tw` -mr-6 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}
+				>
+					Profile
+				</Text>
+				<TouchableOpacity onPress={signOut}>
+					<Icon name="sign-out" style={tw`plus`} />
 				</TouchableOpacity>
-				
 			</View>
 
 			<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
@@ -215,20 +207,17 @@ export default function Profile() {
 						onLongPress={uploadAvatar}
 					>
 						{isLoading ? (
-							<ActivityIndicator size="large" color="#00000" />
+							<ActivityIndicator size="large" color="#00000" style={tw`h-30 w-30`} />
 						) : (
 							<Image
-								source={{ uri: imagePath }}
-								style={tw`h-30 w-30 rounded-full`}
-								onError={() =>
-									setImagePath(
-										defaultProfile?.data?.publicUrl || "fallbackImageUrl",
-									)
-								}
+								source={{ uri: avatarUrl }}
+								style={tw`h-30 w-30 rounded-full bg-foreground dark:bg-dark-foreground`}
 							/>
 						)}
 					</TouchableOpacity>
-					<Text style={tw`ml-4 text-2xl font-bold text-dark-foreground dark:text-foreground`}>
+					<Text
+						style={tw`ml-4 text-2xl font-bold text-dark-foreground dark:text-foreground`}
+					>
 						{username}
 					</Text>
 				</View>

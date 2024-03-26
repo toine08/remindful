@@ -78,7 +78,7 @@ export const updatePushToken = async (
 	}
 };
 
-function getRandomColor() {
+export function getRandomColor() {
 	const letters = '0123456789ABCDEF';
 	let color = '#';
 	for (let i = 0; i < 6; i++) {
