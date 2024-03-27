@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 import * as FileSystem from "expo-file-system";
-import { Image } from "expo-image";
+import {Image} from "expo-image";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
@@ -32,7 +32,8 @@ export default function Profile() {
 	const [firstNameValue, setFirstNameValue] = useState(firstName);
 	const [lastNameValue, setLastNameValue] = useState(lastName);
 	const { data } = supabase.storage.from("avatar").getPublicUrl(`${user?.id}/avatar.png`);
-    const avatarUrl = data?.publicUrl;
+	const [avatarUrl, setAvatarUrl] = useState<string>(data?.publicUrl || "");
+
 
 	const handleUpdateInfos = () => {
 		if (firstNameValue !== null) {
@@ -62,21 +63,21 @@ export default function Profile() {
 			});
 		}
 
+		const fetchAvatarUrl = async () => {
+			const { data, error } = await supabase.storage
+			  .from("avatar")
+			  .getPublicUrl(`${user?.id}/avatar.png`);
+		
+			if (error) {
+			  console.log("Error fetching avatar:", error.message);
+			} else {
+			  setAvatarUrl(data?.publicUrl);
+			}
+		  };
+		
+		  fetchAvatarUrl();
+
 	}, [user, tokenUpdated]);
-
-	const downloadImage = async (url: string) => {
-		const filename = url.substring(url.lastIndexOf("/") + 1);
-		const path = FileSystem.documentDirectory + filename;
-
-		const image = await FileSystem.getInfoAsync(path);
-		if (image.exists) {
-			return image.uri;
-		}
-
-		console.log("Downloading image to cache");
-		await FileSystem.downloadAsync(url, path);
-		return path;
-	};
 
 	async function uploadAvatar() {
 		setIsLoading(true);
@@ -131,8 +132,10 @@ export default function Profile() {
 				setIsLoading(false);
 				return;
 			}
-
-			console.log("Avatar uploaded successfully!");
+			else{
+				console.log("Avatar uploaded successfully");
+            setAvatarUrl(`https://xmfnxrowcwqllkuxogdf.supabase.co/storage/v1/object/public/avatar/${user?.id}/avatar.png`); // Update the avatar URL
+			}
 		} catch (error) {
 			console.error("Error uploading avatar:", error);
 			setIsLoading(false);
@@ -210,8 +213,9 @@ export default function Profile() {
 							<ActivityIndicator size="large" color="#00000" style={tw`h-30 w-30`} />
 						) : (
 							<Image
-								source={{ uri: avatarUrl }}
+								source={{ uri: avatarUrl }} // Fix: Pass avatarUrl as a string
 								style={tw`h-30 w-30 rounded-full bg-foreground dark:bg-dark-foreground`}
+								cachePolicy='none'
 							/>
 						)}
 					</TouchableOpacity>
