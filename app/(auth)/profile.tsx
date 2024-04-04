@@ -65,17 +65,17 @@ export default function Profile() {
 
 		const fetchAvatarUrl = async () => {
 			const { data, error } = await supabase.storage
-			  .from("avatar")
-			  .getPublicUrl(`${user?.id}/avatar.png`);
-		
+				.from("avatar")
+				.getPublicUrl(`${user?.id}/avatar.png`);
+
 			if (error) {
-			  console.log("Error fetching avatar:", error.message);
+				console.log("Error fetching avatar:", error.message);
 			} else {
-			  setAvatarUrl(data?.publicUrl);
+				setAvatarUrl(data?.publicUrl);
 			}
-		  };
-		
-		  fetchAvatarUrl();
+		};
+
+		fetchAvatarUrl();
 
 	}, [user, tokenUpdated]);
 

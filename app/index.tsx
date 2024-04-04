@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import { Text, View } from "react-native";
+import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as z from "zod";
 
@@ -20,6 +21,8 @@ const FormSchema = z.object({
 export default function Login() {
 	const { signInWithPassword } = useSupabase();
 	const router = useRouter();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
 	const {
 		control,
@@ -33,8 +36,9 @@ export default function Login() {
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		try {
 			await signInWithPassword(data.email, data.password);
+			setErrorMessage(null); // Reset the error message on success
 		} catch (error: Error | any) {
-			console.log(error.message);
+    		setErrorMessage("An error occurred: " + error.message); // Set the error message on error
 		}
 	}
 
@@ -100,6 +104,9 @@ export default function Login() {
 							{errors.password && (
 								<FormMessage>{errors.password?.message}</FormMessage>
 							)}
+							{errorMessage && <FormMessage>{errorMessage}</FormMessage>}
+
+							
 						</View>
 					)}
 				/>
