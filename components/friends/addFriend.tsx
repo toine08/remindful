@@ -74,7 +74,8 @@ export default function AddFriend() {
 				data.id,
 				"Friend request",
 				`${connectedUsername} sent you a friend request!`,
-				user?.id || ""
+				user?.id || "",
+				"friend_request"
 			);
 		}, 3000);
 	}

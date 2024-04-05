@@ -40,6 +40,7 @@ function NotificationsList() {
 			.from("notifications")
 			.select("*")
 			.eq("receiver_id", user?.id)
+			.eq("type", "thought")
 			.order("sent_at", { ascending: false })
 			.range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
 

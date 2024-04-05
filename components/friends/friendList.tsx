@@ -146,6 +146,7 @@ function FriendList() {
 											"Remindful",
 											`${connectedUsername} pense à toi!`,
 											friend.friend_id,
+											"thought"
 										);
 									}}
 								>

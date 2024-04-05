@@ -59,6 +59,7 @@ export async function sendPushNotification(
 	title: string,
 	body: string,
 	receiver: string,
+	type: string,
 ) {
 	// Récupérer le jeton de notification push de l'utilisateur
 	const { data: user, error } = await supabase
@@ -101,7 +102,7 @@ export async function sendPushNotification(
 		if (response.ok) {
 			const { data, error } = await supabase
 				.from("notifications")
-				.insert([{ sender_id: userId, receiver_id: receiver }])
+				.insert([{ sender_id: userId, receiver_id: receiver, type: type }])
 				.select();
 			console.log("data insert in notif", new Date())
 		}
