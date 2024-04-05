@@ -5,6 +5,7 @@ import {
 	TouchableWithoutFeedback,
 	TouchableOpacity,
 	FlatList,
+	Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -14,6 +15,7 @@ import { sendPushNotification } from "@/lib/notifications";
 import tw from "@/lib/tailwind";
 import { getUsername, getConnectedUsername } from "@/lib/utils";
 import React from "react";
+import { Button } from "../ui";
 
 type Friend = {
 	friend_id: string;
@@ -26,14 +28,29 @@ type Friend = {
 function FriendList() {
 	const { user } = useSupabase();
 	const [friends, setFriends] = useState<Friend[]>([]);
+	const [friendsName, setFriendsName] = useState<string[]>([]); // Add a new state variable to store the friends' names
 	const [connectedUsername, setConnectedUsername] = useState("");
+	const [selectedFriendUsername, setSelectedFriendUsername] = useState<
+		string | null
+	>(null);
+	const [isCardVisible, setCardVisible] = useState(false);
 
 	useEffect(() => {
 		getFriends();
 		getConnectedUsername(user?.id).then((connectedUsername) =>
 			setConnectedUsername(connectedUsername || ""),
 		);
-	}, []);
+		if (selectedFriendUsername) {
+			getName(selectedFriendUsername)
+				.then((name) => {
+					setFriendsName(name ? [name] : []); // Ensure name is added to an array or set it to an empty array if name is falsy
+				})
+				.catch((error) => {
+					console.error("Error getting name:", error);
+					setFriendsName([]); // If there's an error, set friendsName to an empty array
+				});
+		}
+	}, [selectedFriendUsername]);
 
 	async function getFriends() {
 		const friendsWithUsername = [];
@@ -60,18 +77,65 @@ function FriendList() {
 		}
 	}
 
+	const handleFriendPress = (username: string) => {
+		setSelectedFriendUsername(username);
+		setCardVisible(true);
+	};
+
+	const getName = async (username: any) => {
+		const { data: profile, error } = await supabase
+			.from("profiles")
+			.select("first_name, last_name")
+			.eq("username", username)
+			.single();
+		if (error) {
+			console.error("Error getting profile:", error.message);
+			return;
+		}
+		if (profile) {
+			return `${profile.first_name} ${profile.last_name}`;
+		}
+	};
+
+	const deleteFriend = async () => {
+	if(!friends) return;
+	else{
+		const friend = friends.find((friend) => friend.username === selectedFriendUsername);
+		if (!friend) return;
+
+		const { error } = await supabase
+			.from("friends")
+			.delete()
+			.or(`requester.eq.${user?.id},receiver.eq.${user?.id}`)
+			.or(`requester.eq.${friend.friend_id},receiver.eq.${friend.friend_id}`);
+		if (error) {
+			console.error("Error deleting friend:", error.message);
+		} else {
+			setCardVisible(false);
+			getFriends();
+		}
+	
+	}
+	}
+
 	return (
 		<View style={tw`flex-1 pt-5 w-full`}>
 			<FlatList
 				data={friends}
-				keyExtractor={(item) => item.friend_id }
+				keyExtractor={(item) => item.friend_id}
 				renderItem={({ item: friend, index }) => (
-					<View
-						style={tw`${index === 0 ? "border-t" : ""} border-list`}
-					>
-						<TouchableWithoutFeedback onPress={() => console.log("Pressed!")}>
+					<View style={tw`${index === 0 ? "border-t" : ""} border-list`}>
+						<TouchableWithoutFeedback
+							onLongPress={() => {
+								console.log("Pressed!");
+								setCardVisible(true);
+							}}
+						>
 							<View style={tw`flex-row justify-between w-full`}>
-								<Text style={tw`text-xl text-dark-foreground dark:text-foreground mb-2 font-bold w-5/6`}>
+								<Text
+									style={tw`text-xl text-dark-foreground dark:text-foreground mb-2 font-bold w-5/6`}
+									onLongPress={() => handleFriendPress(friend.username)}
+								>
 									{friend.username}
 								</Text>
 								<TouchableOpacity
@@ -93,8 +157,42 @@ function FriendList() {
 				)}
 				ListFooterComponent={<View style={{ height: 100 }} />}
 			/>
+
+			{isCardVisible && selectedFriendUsername && (
+				<Modal
+					animationType="slide"
+					transparent
+					visible={isCardVisible}
+					onRequestClose={() => {
+						setCardVisible(false);
+					}}
+				>
+					<TouchableWithoutFeedback onPress={() => setCardVisible(false)}>
+						<View style={tw`justify-center items-center flex-1`}>
+						<View
+							style={tw`bg-foreground  dark:bg-dark-foreground p-4 h-1/3 pb-10 rounded-lg justify-center shadow-lg w-full`}
+						>
+							<Text
+								style={tw`text-xl text-center text-dark-foreground dark:text-foreground mt-4`}
+							>
+								{selectedFriendUsername}
+							</Text>
+							<Text
+								style={tw`text-center text-foreground dark:text-foreground mt-2`}
+							>
+								{friendsName.join(", ")}
+							</Text>
+							<View style={tw`mt-4`}>
+								<Button label="Delete" onPress={deleteFriend}></Button>
+							</View>
+						</View>
+						</View>
+						
+					</TouchableWithoutFeedback>
+				</Modal>
+			)}
 		</View>
 	);
 }
 
-export default React.memo(FriendList);
+export default memo(FriendList);
