@@ -65,6 +65,7 @@ module.exports = {
 				muted: `text-sm text-muted-foreground dark:text-dark-muted-foreground`,
 				bell: `ml-6 text-3xl text-primary dark:text-dark-primary font-semibold`,
 				plus:`text-primary dark:text-dark-primary text-3xl`,
+				trash: `text-red-500 text-xl`,
 				"border-list": `border-b border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between`,
 				"border-login": `border rounded-lg border-stone-400 dark:border-neutral-500 flex-row mr-2 p-4 justify-between`,
 				"border-input":`min-w-60 p-2 rounded border border-primary dark:border-dark-primary text-dark-foreground dark:text-foreground h-12`,

@@ -160,36 +160,36 @@ function FriendList() {
 
 			{isCardVisible && selectedFriendUsername && (
 				<Modal
-					animationType="slide"
-					transparent
-					visible={isCardVisible}
-					onRequestClose={() => {
-						setCardVisible(false);
-					}}
-				>
-					<TouchableWithoutFeedback onPress={() => setCardVisible(false)}>
-						<View style={tw`justify-center items-center flex-1`}>
-						<View
-							style={tw`bg-foreground  dark:bg-dark-foreground p-4 h-1/3 pb-10 rounded-lg justify-center shadow-lg w-full`}
-						>
-							<Text
-								style={tw`text-xl text-center text-dark-foreground dark:text-foreground mt-4`}
-							>
-								{selectedFriendUsername}
-							</Text>
-							<Text
-								style={tw`text-center text-foreground dark:text-foreground mt-2`}
-							>
-								{friendsName.join(", ")}
-							</Text>
-							<View style={tw`mt-4`}>
-								<Button label="Delete" onPress={deleteFriend}></Button>
-							</View>
-						</View>
-						</View>
-						
-					</TouchableWithoutFeedback>
-				</Modal>
+				animationType="slide"
+				transparent
+				visible={isCardVisible}
+				onRequestClose={() => {
+				  setCardVisible(false);
+				}}
+			  >
+				<TouchableWithoutFeedback onPress={() => setCardVisible(false)}>
+				  <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}>
+					<View
+					  style={tw`bg-foreground dark:bg-dark-foreground p-6 rounded-lg shadow-lg w-3/4`}
+					>
+					  <Text
+						style={tw`text-2xl text-center text-dark-foreground dark:text-foreground mb-4`}
+					  >
+						{selectedFriendUsername}
+					  </Text>
+					  <Text
+						style={tw`text-center text-foreground dark:text-foreground mb-4`}
+					  >
+						{friendsName.join(", ")}
+					  </Text>
+					  <View style={tw`mt-4 flex-row justify-center items-center`}>
+						<Text style={tw`text-xl mr-2 text-dark-foreground dark:text-foreground`}>Delete your friendship ? </Text>
+						<Icon style={tw`text-red-500`} name="trash" onPress={deleteFriend} />
+					  </View>
+					</View>
+				  </View>
+				</TouchableWithoutFeedback>
+			  </Modal>
 			)}
 		</View>
 	);
