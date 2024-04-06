@@ -1,27 +1,52 @@
-# Expo Supabase Starter
+# Remindful
 
-[![MIT License](https://img.shields.io/github/license/FlemingVincent/expo-supabase-starter)](https://github.com/FlemingVincent/expo-supabase-starter/blob/main/LICENSE)
+Remindful is a mobile application that allows users to send thoughtful, non-intrusive notifications to people they're thinking about, without the need for a conversation. It's a subtle way to let someone know they're on your mind.
 
-## Introduction
+## Features
 
-This repository serves as a comprehensive template for developing Expo applications with Supabase as the backend. It integrates various technologies such as Expo Router for navigation, Tailwind for styling, React-Hook-Form for form handling, Zod for schema validation, and TypeScript for type safety. By leveraging these powerful tools, this starter template provides a robust foundation for building modern, scalable, and efficient mobile applications.
+- Send notifications to your contacts
+- Manage your contact list
+- Customize notification messages (feature coming soon)
+- Schedule notifications for a future time
 
-#### Disclaimer
+## Getting Started
 
-This is not supposed to be a template, boilerplate or a framework. It is an opinionated guide that shows how to do some things in a certain way. You are not forced to do everything exactly as it is shown here, decide what works best for you and your team and stay consistent with your style.
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-## Table of Contents
+### Prerequisites
 
-- [💻 Application Overview](docs/application-overview.md)
-- [⚙️ Project Configuration](docs/project-configuration.md)
-- [🗄️ Project Structure](docs/project-structure.md)
-- [🧱 Components And Styling](docs/components-and-styling.md)
-- [🗃️ State Management](docs/state-management.md)
+- Node.js
+- Bun CLI
+
+### Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your_username_/Remindful.git
+   ```
+2. Navigate to the project directory and install the packages with Bun:
+   ```sh
+   cd Remindful
+   bun install
+   ```
+3. Start the development server:
+   ```sh
+   bun start
+   ```
+
+
 
 ## Contributing
 
-Contributions to this starter template are highly encouraged and welcome! If you have any suggestions, bug reports, or feature requests, please feel free to create an issue or submit a pull request. Let's work together to enhance the developer experience and make it easier for everyone to build exceptional Expo applications with Supabase.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 ## License
 
-This repository is licensed under the MIT License. You are granted the freedom to use, modify, and distribute the code for personal or commercial purposes. For more details, please refer to the [LICENSE](https://github.com/FlemingVincent/supabase-starter/blob/main/LICENSE) file.
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+Toine - remindfulapp@app.xyz
+
+Project Link: [https://github.com/toine08/Remindful](https://github.com/toine08/Remindful)
+```
