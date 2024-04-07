@@ -5,7 +5,7 @@
     "scheme": "xyz.remindfulapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "plateforms":[
+    "plateforms": [
       "ios",
       "android",
       "web"
@@ -30,8 +30,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#91E39A"
+      },
+      "package": "xyz.remdinful.app"
     },
     "web": {
       "favicon": "./assets/favicon.png",

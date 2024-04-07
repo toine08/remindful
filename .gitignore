@@ -19,3 +19,4 @@ web-build/
 .env.local
 .env.example
 ios
+android
