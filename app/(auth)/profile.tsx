@@ -189,7 +189,7 @@ export default function Profile() {
 
 	return (
 		<SafeAreaView
-			style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground`}
+			style={tw`pt-10 flex-1 items-center bg-foreground dark:bg-dark-foreground`}
 		>
 			<View style={tw`flex-row justify-between items-center w-full px-5`}>
 				<Icon name="info-circle" style={tw`plus`} />
