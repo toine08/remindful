@@ -5,7 +5,7 @@
     "scheme": "xyz.remindfulapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "plateforms": [
+    "platforms": [
       "ios",
       "android",
       "web"
@@ -22,7 +22,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "xyz.remdinful",
+      "bundleIdentifier": "xyz.remindful",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -32,11 +32,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#91E39A"
       },
-      "package": "xyz.remdinful"
+      "package": "xyz.remindful"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "favicon": "./assets/favicon.png"
     },
     "experiments": {
       "tsconfigPaths": true
