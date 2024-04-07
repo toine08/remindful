@@ -6,8 +6,7 @@ Remindful is a mobile application that allows users to send thoughtful, non-intr
 
 - Send notifications to your contacts
 - Manage your contact list
-- Customize notification messages (feature coming soon)
-- Schedule notifications for a future time
+- Customize notification messages (feature coming soon) 
 
 ## Getting Started
 

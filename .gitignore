@@ -18,3 +18,4 @@ web-build/
 *.env
 .env.local
 .env.example
+ios

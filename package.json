@@ -4,8 +4,8 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start --clear",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "eslint . --fix"
   },
@@ -25,7 +25,7 @@
     "expo-image": "^1.5.1",
     "expo-image-manipulator": "^11.5.0",
     "expo-image-picker": "^14.5.0",
-    "expo-insights": "^0.4.0",
+    "expo-insights": "~0.6.1",
     "expo-linking": "~5.0.2",
     "expo-notifications": "^0.23.0",
     "expo-router": "^3.4.8",
