@@ -3,7 +3,7 @@
     "name": "Remindful",
     "slug": "Remindful",
     "scheme": "xyz.remindfulapp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "platforms": [
       "ios",
@@ -22,7 +22,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "xyz.remindful",
+      "bundleIdentifier": "xyz.remindfulapp",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -32,7 +32,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#91E39A"
       },
-      "package": "xyz.remindful"
+      "package": "xyz.remindfulapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
