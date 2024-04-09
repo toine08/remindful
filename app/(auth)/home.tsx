@@ -30,7 +30,7 @@ export default function Index() {
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<SafeAreaView
-				style={tw`pt-10 flex-1 items-start w-full justify-start bg-foreground dark:bg-dark-foreground`}
+				style={tw`pt-12 flex-1 items-start w-full justify-start bg-foreground dark:bg-stone-950`}
 			>
 				<Text style={tw`h3 font-bold mb-2 self-center mx-auto text-dark-foreground dark:text-foreground`}>
 					Home

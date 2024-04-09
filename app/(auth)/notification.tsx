@@ -110,7 +110,7 @@ function NotificationsList() {
 
 	return (
 		<SafeAreaView
-			style={tw`pt-10 w-full h-full flex-1 items-center bg-foreground dark:bg-dark-foreground`}
+			style={tw`pt-12 w-full h-full flex-1 items-center bg-foreground dark:bg-stone-950`}
 		>
 			<Text
 				style={tw`h3 font-bold mb-2 self-center mx-auto text-dark-foreground dark:text-foreground`}

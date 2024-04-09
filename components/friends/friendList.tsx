@@ -119,7 +119,7 @@ function FriendList() {
 	}
 
 	return (
-		<View style={tw`flex-1 pt-5 w-full`}>
+		<View style={tw`flex-1 pt-5 w-full h-full`}>
 			<FlatList
 				data={friends}
 				keyExtractor={(item) => item.friend_id}
@@ -161,7 +161,7 @@ function FriendList() {
 
 			{isCardVisible && selectedFriendUsername && (
 				<Modal
-				animationType="slide"
+				animationType="none"
 				transparent
 				visible={isCardVisible}
 				onRequestClose={() => {
@@ -169,7 +169,7 @@ function FriendList() {
 				}}
 			  >
 				<TouchableWithoutFeedback onPress={() => setCardVisible(false)}>
-				  <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}>
+				  <View style={tw`flex-1  h-100 justify-center items-center bg-black bg-opacity-50`}>
 					<View
 					  style={tw`bg-foreground dark:bg-dark-foreground p-6 rounded-lg shadow-lg w-3/4`}
 					>
@@ -179,13 +179,13 @@ function FriendList() {
 						{selectedFriendUsername}
 					  </Text>
 					  <Text
-						style={tw`text-center text-foreground dark:text-foreground mb-4`}
+						style={tw`text-center text-dark-foreground dark:text-foreground mb-4`}
 					  >
 						{friendsName.join(", ")}
 					  </Text>
 					  <View style={tw`mt-4 flex-row justify-center items-center`}>
 						<Text style={tw`text-xl mr-2 text-dark-foreground dark:text-foreground`}>Delete your friendship ? </Text>
-						<Icon style={tw`text-red-500`} name="trash" onPress={deleteFriend} />
+						<Icon style={tw`trash`} name="trash" onPress={deleteFriend} />
 					  </View>
 					</View>
 				  </View>
