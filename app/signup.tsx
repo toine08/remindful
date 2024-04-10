@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
-import { Text, View } from "react-native";
+import { Text, View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as z from "zod";
 
@@ -68,7 +68,7 @@ export default function SignUp() {
 			}
 
 			if (usernameData && usernameData.length > 0) {
-				alert("This username is already used");
+				Alert.alert("This username is already used");
 				return;
 			}
 
@@ -88,7 +88,7 @@ export default function SignUp() {
 			}
 
 			if (emailData && emailData.length > 0) {
-				alert("This mail is already used");
+				Alert.alert("This mail is already used");
 				return;
 			}
 
@@ -123,7 +123,7 @@ export default function SignUp() {
 				}
 
 				console.log("User and profile created:", user, profile);
-				alert("A confirmation mail as been sent!");
+				Alert.alert("A confirmation mail as been sent!");
 			}
 		} catch (error: Error | any) {
 			console.log("Unexpected error:", error.message);
@@ -132,7 +132,7 @@ export default function SignUp() {
 
 	return (
 		<SafeAreaView
-			style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground p-5`}
+			style={tw`flex-1 items-center bg-foreground dark:bg-stone-950 p-5`}
 		>
 			<Text style={tw`h1 self-start mb-5 text-dark-foreground dark:text-foreground`}>Remindful</Text>
 			<Text style={tw`h3 self-start mb-5 text-dark-foreground dark:text-foreground`}>SignUp</Text>

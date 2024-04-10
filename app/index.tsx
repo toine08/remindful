@@ -44,7 +44,7 @@ export default function Login() {
 
 	return (
 		<SafeAreaView
-			style={tw`flex-1 items-center bg-foreground dark:bg-dark-foreground p-5`}
+			style={tw`flex-1 items-center bg-foreground dark:bg-stone-950 p-5`}
 		>
 			<Text
 				style={tw`h1 text-dark-foreground dark:text-foreground self-start mb-5`}
