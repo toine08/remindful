@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 import * as FileSystem from "expo-file-system";
-import {Image} from "expo-image";
+import { Image } from "expo-image";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
@@ -24,22 +24,23 @@ import Icon from "react-native-vector-icons/FontAwesome";
 export default function Profile() {
 	const { signOut, user } = useSupabase();
 	const [username, setUsername] = useState<string | null>(null);
-	const [firstName, setFirstName] = useState<string | null>(null);
-	const [lastName, setLastName] = useState<string | null>(null);
+	const [firstName, setFirstName] = useState<string | undefined>();
+	const [lastName, setLastName] = useState<string | undefined>();
 	const [tokenUpdated, setTokenUpdated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [imagePath, setImagePath] = useState<string>('');
+	const [imagePath, setImagePath] = useState<string>("");
 	const [firstNameValue, setFirstNameValue] = useState(firstName);
 	const [lastNameValue, setLastNameValue] = useState(lastName);
-	const { data } = supabase.storage.from("avatar").getPublicUrl(`${user?.id}/avatar.png`);
+	const { data } = supabase.storage
+		.from("avatar")
+		.getPublicUrl(`${user?.id}/avatar.png`);
 	const [avatarUrl, setAvatarUrl] = useState<string>(data?.publicUrl || "");
 
-
 	const handleUpdateInfos = () => {
-		if (firstNameValue !== null) {
+		if (firstNameValue !== undefined) {
 			updateFirstName(firstNameValue);
 		}
-		if (lastNameValue !== null) {
+		if (lastNameValue !== undefined) {
 			updateLastName(lastNameValue);
 		}
 	};
@@ -76,7 +77,6 @@ export default function Profile() {
 		};
 
 		fetchAvatarUrl();
-
 	}, [user, tokenUpdated]);
 
 	async function uploadAvatar() {
@@ -131,10 +131,11 @@ export default function Profile() {
 				console.error("Failed to upload image:", error);
 				setIsLoading(false);
 				return;
-			}
-			else{
+			} else {
 				console.log("Avatar uploaded successfully");
-            setAvatarUrl(`https://xmfnxrowcwqllkuxogdf.supabase.co/storage/v1/object/public/avatar/${user?.id}/avatar.png`); // Update the avatar URL
+				setAvatarUrl(
+					`https://xmfnxrowcwqllkuxogdf.supabase.co/storage/v1/object/public/avatar/${user?.id}/avatar.png`,
+				); // Update the avatar URL
 			}
 		} catch (error) {
 			console.error("Error uploading avatar:", error);
@@ -187,6 +188,7 @@ export default function Profile() {
 		return null;
 	}
 
+
 	return (
 		<SafeAreaView
 			style={tw`pt-12 flex-1 items-center bg-foreground dark:bg-stone-950`}
@@ -210,12 +212,16 @@ export default function Profile() {
 						onLongPress={uploadAvatar}
 					>
 						{isLoading ? (
-							<ActivityIndicator size="large" color="#00000" style={tw`h-30 w-30`} />
+							<ActivityIndicator
+								size="large"
+								color="#00000"
+								style={tw`h-30 w-30`}
+							/>
 						) : (
 							<Image
 								source={{ uri: avatarUrl }} // Fix: Pass avatarUrl as a string
 								style={tw`h-30 w-30 rounded-full bg-foreground dark:bg-dark-foreground`}
-								cachePolicy='none'
+								cachePolicy="none"
 							/>
 						)}
 					</TouchableOpacity>
@@ -228,15 +234,15 @@ export default function Profile() {
 				<View style={tw`flex flex-col mt-2 gap-y-4`}>
 					<Input
 						size="large"
-						placeholder={firstName ?? "Firstname"}
-						value={firstNameValue ?? ""}
+						placeholder={firstNameValue?.length ?? 0 < 2 ? "Firstname" : firstNameValue}
+						value={firstNameValue?.length ?? 0 < 2 ? "Firstname" : firstNameValue}
 						onChangeText={setFirstNameValue}
 						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
 					<Input
 						size="large"
-						placeholder={lastName ?? "Lastname"}
-						value={lastNameValue ?? ""}
+						placeholder={lastNameValue?.length ?? 0 <2 ? "Lastname" : lastNameValue}
+						value={lastNameValue?.length ?? 0 <2 ? "Lastname" : lastNameValue}
 						onChangeText={setLastNameValue}
 						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
