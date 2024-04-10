@@ -194,7 +194,7 @@ export default function Profile() {
 			style={tw`pt-12 flex-1 items-center bg-foreground dark:bg-stone-950`}
 		>
 			<View style={tw`flex-row justify-between items-center w-full px-5`}>
-				<Icon name="info-circle" style={tw`plus`} />
+				<Icon name="info-circle" style={tw`plus text-foreground dark:text-stone-950`} />
 				<Text
 					style={tw` -mr-2 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}
 				>
