@@ -20,12 +20,13 @@ import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
 import { updatePushToken, getUsername } from "@/lib/utils";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Link, router } from "expo-router";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
 	const [username, setUsername] = useState<string | null>(null);
-	const [firstName, setFirstName] = useState<string | undefined>();
-	const [lastName, setLastName] = useState<string | undefined>();
+	const [firstName, setFirstName] = useState<string>("");
+	const [lastName, setLastName] = useState<string>("");
 	const [tokenUpdated, setTokenUpdated] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [imagePath, setImagePath] = useState<string>("");
@@ -37,10 +38,10 @@ export default function Profile() {
 	const [avatarUrl, setAvatarUrl] = useState<string>(data?.publicUrl || "");
 
 	const handleUpdateInfos = () => {
-		if (firstNameValue !== undefined) {
+		if (firstNameValue.length >1 ) {
 			updateFirstName(firstNameValue);
 		}
-		if (lastNameValue !== undefined) {
+		if (lastNameValue.length >1) {
 			updateLastName(lastNameValue);
 		}
 	};
@@ -65,14 +66,15 @@ export default function Profile() {
 		}
 
 		const fetchAvatarUrl = async () => {
-			const { data, error } = await supabase.storage
+			const { data } = await supabase.storage
 				.from("avatar")
 				.getPublicUrl(`${user?.id}/avatar.png`);
 
-			if (error) {
-				console.log("Error fetching avatar:", error.message);
-			} else {
+			if (data) {
 				setAvatarUrl(data?.publicUrl);
+				
+			} else {
+				console.log("Error fetching avatar:", data);
 			}
 		};
 
@@ -187,14 +189,17 @@ export default function Profile() {
 		}
 		return null;
 	}
-
-
 	return (
 		<SafeAreaView
 			style={tw`pt-12 flex-1 items-center bg-foreground dark:bg-stone-950`}
 		>
 			<View style={tw`flex-row justify-between items-center w-full px-5`}>
-				<Icon name="info-circle" style={tw`plus text-foreground dark:text-stone-950`} />
+				<TouchableOpacity onPress={()=>("Information")}>
+					<Link href="/about">
+						<Icon name="info" style={tw`plus`} />
+					</Link>
+				</TouchableOpacity>
+
 				<Text
 					style={tw` -mr-2 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}
 				>
@@ -234,15 +239,15 @@ export default function Profile() {
 				<View style={tw`flex flex-col mt-2 gap-y-4`}>
 					<Input
 						size="large"
-						placeholder={firstNameValue?.length ?? 0 < 2 ? "Firstname" : firstNameValue}
-						value={firstNameValue?.length ?? 0 < 2 ? "Firstname" : firstNameValue}
+						placeholder={firstNameValue?.length<= 2 ? "Firstname" : firstNameValue}
+						value={firstNameValue?.length<= 2 ? "Firstname" : firstNameValue}
 						onChangeText={setFirstNameValue}
 						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
 					<Input
 						size="large"
-						placeholder={lastNameValue?.length ?? 0 <2 ? "Lastname" : lastNameValue}
-						value={lastNameValue?.length ?? 0 <2 ? "Lastname" : lastNameValue}
+						placeholder={lastNameValue?.length <=1 ? "Lastname" : lastNameValue}
+						value={lastNameValue?.length <=1 ? "Lastname" : lastNameValue}
 						onChangeText={setLastNameValue}
 						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
