@@ -2,8 +2,12 @@ import React from "react";
 import { View, Text, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "@/lib/tailwind";
+import { usePushNotifications } from '../../lib/notifications';
+
 
 function About() {
+    const { token } = usePushNotifications();
+
     const handleEmail = () => {
         Linking.openURL('mailto:team@remindfulapp.xyz');
     };
@@ -22,6 +26,8 @@ function About() {
             <Text style={tw`text-dark-foreground dark:text-foreground mb-2`}>Who I am: Toine Riedo, young developer from Switzerland passionate about web development, running and video games</Text>
             <Text style={tw`text-dark-foreground dark:text-foreground mb-2`}>Purpose of the app: It's a mobile application that allows users to send thoughtful, non-intrusive notifications to people they're thinking about, without the need for a conversation. It's a subtle way to let someone know they're on their mind.</Text>
             <Text style={tw`text-dark-foreground dark:text-foreground`} >Contact email: <Text onPress={handleEmail}>team@remindfulapp.xyz</Text></Text>
+            <Text style={tw`text-dark-foreground dark:text-foreground text-justify`}>Push token: {token}</Text>
+
         </View>
         </View>
     </SafeAreaView>

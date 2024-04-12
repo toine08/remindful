@@ -12,7 +12,7 @@ import {
 	SafeAreaView,
 } from "react-native";
 
-import { registerForPushNotifications } from "../../lib/notifications";
+import { usePushNotifications } from "../../lib/notifications";
 
 import { Button, Input } from "@/components/ui";
 import { supabase } from "@/config/supabase";
@@ -56,14 +56,14 @@ export default function Profile() {
 				setLastNameValue(lastName || ""),
 			);
 		}
-		if (!tokenUpdated) {
-			registerForPushNotifications().then((token: string | undefined) => {
-				const tokenValue = token ?? "";
-				updatePushToken(tokenValue, user?.id ?? "").then(() =>
-					setTokenUpdated(true),
-				);
-			});
-		}
+		(async () => {
+			if (!tokenUpdated) {
+				const token = await usePushNotifications();
+				const tokenValue = token?.token ?? "";
+				await updatePushToken(tokenValue, user?.id ?? "");
+				setTokenUpdated(true);
+			}
+		})();
 
 		const fetchAvatarUrl = async () => {
 			const { data } = await supabase.storage

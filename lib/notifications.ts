@@ -1,40 +1,45 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
+import { useState } from 'react';
+
 
 import { supabase } from "@/config/supabase";
 
 const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;
 
-export async function registerForPushNotifications() {
-	let token;
-	if (Device.isDevice) {
-		const { status: existingStatus } =
-			await Notifications.getPermissionsAsync();
+export function usePushNotifications() {
+	const [token, setToken] = useState<string | null>(null);
+  
+	const registerForPushNotifications = async () => {
+	  if (Device.isDevice) {
+		const { status: existingStatus } = await Notifications.getPermissionsAsync();
 		let finalStatus = existingStatus;
 		if (existingStatus !== "granted") {
-			const { status } = await Notifications.requestPermissionsAsync();
-			finalStatus = status;
+		  const { status } = await Notifications.requestPermissionsAsync();
+		  finalStatus = status;
 		}
 		if (finalStatus !== "granted") {
-			alert("Failed to get push token for push notification!");
-			return;
+		  alert("Failed to get push token for push notification!");
+		  return;
 		}
-		token = (await Notifications.getExpoPushTokenAsync()).data;
-	} else {
+		const tokenData = (await Notifications.getExpoPushTokenAsync()).data;
+		setToken(tokenData);
+	  } else {
 		alert("Must use physical device for Push Notifications");
-	}
-
-	if (Platform.OS === "android") {
+	  }
+  
+	  if (Platform.OS === "android") {
 		Notifications.setNotificationChannelAsync("default", {
-			name: "default",
-			importance: Notifications.AndroidImportance.DEFAULT,
-			vibrationPattern: [0, 250, 250, 250],
-			lightColor: "#FF231F7C",
+		  name: "default",
+		  importance: Notifications.AndroidImportance.DEFAULT,
+		  vibrationPattern: [0, 250, 250, 250],
 		});
-	}
-	return token;
-}
+	  }
+	};
+  
+	return { token, registerForPushNotifications };
+  }
 
 export async function hasSentNotificationInTheLastHour(sender: string, receiver: string) {
 	const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000);
@@ -67,6 +72,15 @@ export async function sendPushNotification(
 		.select("push_token")
 		.eq("id", userId)
 		.single();
+
+	if(userId === receiver) {
+		alert("You can't send a notification to yourself.");
+		return;
+
+	}else if(userId=== null){
+		alert("The user is not found.");
+		return;
+	}
 
 	//check notifications time
 	if (await hasSentNotificationInTheLastHour(userId, receiver)) {
