@@ -142,7 +142,7 @@ function FriendList() {
 									style={tw`flex-row items-center w-1/6`}
 									onPress={() => {
 										sendPushNotification(
-											user?.id || "",
+											user?.id || "ERROR",
 											"Remindful",
 											`${connectedUsername} pense à toi!`,
 											friend.friend_id,

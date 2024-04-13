@@ -21,3 +21,4 @@ eas.json
 .env.example
 ios
 android
+*.ipa

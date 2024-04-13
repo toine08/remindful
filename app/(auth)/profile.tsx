@@ -11,9 +11,6 @@ import {
 	ActivityIndicator,
 	SafeAreaView,
 } from "react-native";
-
-import { usePushNotifications } from "../../lib/notifications";
-
 import { Button, Input } from "@/components/ui";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
@@ -21,6 +18,7 @@ import tw from "@/lib/tailwind";
 import { updatePushToken, getUsername } from "@/lib/utils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Link, router } from "expo-router";
+import { usePushNotifications } from "@/lib/notifications";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
@@ -59,7 +57,7 @@ export default function Profile() {
 		(async () => {
 			if (!tokenUpdated) {
 				const token = await usePushNotifications();
-				const tokenValue = token?.token ?? "";
+				const tokenValue = token ?? "";
 				await updatePushToken(tokenValue, user?.id ?? "");
 				setTokenUpdated(true);
 			}

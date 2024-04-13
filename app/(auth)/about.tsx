@@ -2,13 +2,21 @@ import React from "react";
 import { View, Text, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "@/lib/tailwind";
-import { usePushNotifications } from '../../lib/notifications';
-
+import { retreiveNotificationToken } from "@/lib/notifications";
+import { useState, useEffect } from "react";
 
 function About() {
-    const { token } = usePushNotifications();
+    const [token, setToken] = useState<string | undefined>();
 
-    const handleEmail = () => {
+    useEffect(() => {
+        const fetchToken = async () => {
+            const storedToken = await retreiveNotificationToken();
+            setToken(storedToken || undefined);
+        };
+
+        fetchToken();
+    }, []);
+    const handleEmail = async () => {
         Linking.openURL('mailto:team@remindfulapp.xyz');
     };
 

@@ -1,45 +1,111 @@
+import { useState, useEffect, useRef } from "react";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
-import { useState } from 'react';
-
-
+import Constants from "expo-constants";
 import { supabase } from "@/config/supabase";
 
-const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;
+import { Platform, Alert } from "react-native";
 
-export function usePushNotifications() {
-	const [token, setToken] = useState<string | null>(null);
-  
-	const registerForPushNotifications = async () => {
-	  if (Device.isDevice) {
-		const { status: existingStatus } = await Notifications.getPermissionsAsync();
-		let finalStatus = existingStatus;
-		if (existingStatus !== "granted") {
-		  const { status } = await Notifications.requestPermissionsAsync();
-		  finalStatus = status;
-		}
-		if (finalStatus !== "granted") {
-		  alert("Failed to get push token for push notification!");
-		  return;
-		}
-		const tokenData = (await Notifications.getExpoPushTokenAsync()).data;
-		setToken(tokenData);
-	  } else {
-		alert("Must use physical device for Push Notifications");
-	  }
-  
-	  if (Platform.OS === "android") {
-		Notifications.setNotificationChannelAsync("default", {
-		  name: "default",
-		  importance: Notifications.AndroidImportance.DEFAULT,
-		  vibrationPattern: [0, 250, 250, 250],
-		});
-	  }
-	};
-  
-	return { token, registerForPushNotifications };
+const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;	
+
+export interface PushNotificationState {
+  expoPushToken?: Notifications.ExpoPushToken;
+  notification?: Notifications.Notification;
+}
+
+export const usePushNotifications = (): PushNotificationState => {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldPlaySound: false,
+      shouldShowAlert: true,
+      shouldSetBadge: false,
+    }),
+  });
+
+  const [expoPushToken, setExpoPushToken] = useState<
+    Notifications.ExpoPushToken | undefined
+  >();
+
+  const [notification, setNotification] = useState<
+    Notifications.Notification | undefined
+  >();
+
+  const notificationListener = useRef<Notifications.Subscription>();
+  const responseListener = useRef<Notifications.Subscription>();
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== "granted") {
+        Alert.alert("Failed to get push token for push notification");
+        return;
+      }
+
+      token = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig?.extra?.eas.projectId,
+      });
+    } else {
+      Alert.alert("Must be using a physical device for Push notifications");
+    }
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    return token;
   }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token);
+    });
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      }
+    );
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current!);
+      Notifications.removeNotificationSubscription(responseListener.current!);
+    };
+  }, []);
+
+  return {
+    expoPushToken,
+    notification,
+  };
+};
+
+
+export async function retreiveNotificationToken(){
+	try {
+		const userToken = (await Notifications.getExpoPushTokenAsync()).data;
+		return userToken;
+	} catch (error) {
+		Alert.alert("An error occurred while fetching the notification token.");
+	}
+}
 
 export async function hasSentNotificationInTheLastHour(sender: string, receiver: string) {
 	const tenMinAgo = new Date(Date.now() - 10 * 60 * 1000);
@@ -59,46 +125,45 @@ export async function hasSentNotificationInTheLastHour(sender: string, receiver:
   
 	return notifications.length > 0;
   }
-export async function sendPushNotification(
+  export async function sendPushNotification(
 	userId: string,
 	title: string,
 	body: string,
 	receiver: string,
 	type: string,
-) {
-	// Récupérer le jeton de notification push de l'utilisateur
+  ) {
+	// Retrieve the push token of the user from the database
 	const { data: user, error } = await supabase
-		.from("profiles")
-		.select("push_token")
-		.eq("id", userId)
-		.single();
-
-	if(userId === receiver) {
-		alert("You can't send a notification to yourself.");
-		return;
-
-	}else if(userId=== null){
-		alert("The user is not found.");
-		return;
+	  .from("profiles")
+	  .select("push_token")
+	  .eq("id", receiver)
+	  .single();
+  
+	if (userId === receiver) {
+	  alert("You can't send a notification to yourself.");
+	  return;
+	} else if (!user) {
+	  alert("The user is not found.");
+	  return;
 	}
-
-	//check notifications time
+  
 	if (await hasSentNotificationInTheLastHour(userId, receiver)) {
-		alert("A notification was already sent within the last hour.");
-		return;
+	  alert("A notification was already sent within the last hour.");
+	  return;
 	}
-
+  
 	if (error || !user?.push_token) {
-		console.log("Erreur lors de la récupération du jeton push :", error);
-		return;
+	  console.log("Error retrieving the push token:", error,userId);
+	  return;
 	}
-
+	
+  
 	const message = {
-		to: user.push_token,
-		sound: "default",
-		title,
-		body,
-		data: { someData: "goes here" },
+	  to: user.push_token,
+	  sound: "default",
+	  title,
+	  body,
+	  data: { someData: "goes here" },
 	};
 
 	try {

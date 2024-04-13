@@ -1,4 +1,5 @@
 import { supabase } from "@/config/supabase";
+import { PushNotificationState } from "./notifications";
 
 export async function handleFriendRequest(
 	action: "accepted" | "rejected",
@@ -39,44 +40,25 @@ export async function getConnectedUsername(userId: string | undefined) {
 	return usernameCapitalized; // accéder à la propriété username de l'objet retourné
 }
 
-export const updatePushToken = async (
-	tokenValue: string | undefined,
-	userId: string,
-) => {
-	try {
-		// Récupérer l'enregistrement de l'utilisateur
-		const { data: user, error: fetchError } = await supabase
-			.from("profiles")
-			.select("push_token")
-			.eq("id", userId || "")
-			.single();
-
-		if (fetchError) {
-			console.log("Erreur lors de la récupération du jeton push :", fetchError);
-			return;
-		}
-
-		// Vérifier si push_token est déjà défini
-		if (user?.push_token) {
-			console.log("Le jeton push est déjà défini :", user.push_token);
-			return;
-		}
-
-		// Mettre à jour push_token si non défini
-		const { data, error: updateError } = await supabase
-			.from("profiles")
-			.update({ push_token: tokenValue })
-			.eq("id", userId || "");
-
-		if (updateError) {
-			console.log("Erreur lors de la mise à jour du jeton push :", updateError);
-		} else {
-			console.log("Jeton push mis à jour avec succès :", data);
-		}
-	} catch (error) {
-		console.error("Erreur lors de la mise à jour du jeton push :", error);
+export async function updatePushToken(pushNotificationState: PushNotificationState, userid:string) {
+	const { pushToken } = pushNotificationState as { pushToken: string };
+  
+	if (!pushToken) {
+	  console.log("No push token to update");
+	  return;
 	}
-};
+  
+	const { data, error } = await supabase
+	  .from("profiles")
+	  .update({ push_token: pushToken })
+	  .eq("id", userid);
+  
+	if (error) {
+	  console.log("Error updating push token:", error.message);
+	} else {
+	  console.log("Successfully updated push token:", data);
+	}
+  }
 
 export function getRandomColor() {
 	const letters = '0123456789ABCDEF';
