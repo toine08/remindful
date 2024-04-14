@@ -22,3 +22,6 @@ eas.json
 ios
 android
 *.ipa
+
+test
+AccountTest1!
