@@ -34,7 +34,6 @@ function About() {
             <Text style={tw`text-dark-foreground dark:text-foreground mb-2`}>Who I am: Toine Riedo, young developer from Switzerland passionate about web development, running and video games</Text>
             <Text style={tw`text-dark-foreground dark:text-foreground mb-2`}>Purpose of the app: It's a mobile application that allows users to send thoughtful, non-intrusive notifications to people they're thinking about, without the need for a conversation. It's a subtle way to let someone know they're on their mind.</Text>
             <Text style={tw`text-dark-foreground dark:text-foreground`} >Contact email: <Text onPress={handleEmail}>team@remindfulapp.xyz</Text></Text>
-            <Text style={tw`text-dark-foreground dark:text-foreground text-justify`}>Push token: {token}</Text>
 
         </View>
         </View>
