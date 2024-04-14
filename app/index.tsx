@@ -9,6 +9,7 @@ import * as z from "zod";
 import { Button, FormLabel, FormMessage, Input } from "@/components/ui";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
+import { handleNewUserLogin } from "@/lib/notifications";
 
 const FormSchema = z.object({
 	email: z.string().email("Please enter a valid email address."),
@@ -36,6 +37,7 @@ export default function Login() {
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
 		try {
 			await signInWithPassword(data.email, data.password);
+			handleNewUserLogin();
 			setErrorMessage(null); // Reset the error message on success
 		} catch (error: Error | any) {
     		setErrorMessage("An error occurred: " + error.message); // Set the error message on error
