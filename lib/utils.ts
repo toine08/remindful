@@ -50,14 +50,14 @@ export async function updatePushToken(pushToken: ExpoPushToken, userid: string) 
 	}
   
 	// Récupérer le push token actuellement enregistré pour l'utilisateur
-	const { data: existingData, error } = await supabase
+	const { data: existingData, error:existingDataError } = await supabase
 	  .from("profiles")
 	  .select("push_token")
 	  .eq("id", userid)
 	  .single();
   
-	if (error) {
-	  console.log("Error fetching existing push token:", error);
+	if (existingDataError) {
+	  console.log("Error fetching existing push token:", existingDataError);
 	  return;
 	}
   
