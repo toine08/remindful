@@ -18,6 +18,12 @@
         "distribution":"internal"
       }
     },
-    "production": {}
+    "production": {
+      "env":{
+        "EXPO_PUBLIC_ACCESS_TOKEN":"dQ5_LPEB1YqoxX8aZ7IXIk3cJZZY6c3h_K6jQM2N",
+        "EXPO_PUBLIC_API_URL":"https://xmfnxrowcwqllkuxogdf.supabase.co",
+        "EXPO_PUBLIC_API_KEY":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtZm54cm93Y3dxbGxrdXhvZ2RmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA5ODcwMTMsImV4cCI6MjAwNjU2MzAxM30.q_xm_TWfYiALbuIyJVR0ke7a0T1i9oUIK3cSoj6AF5g"
+      }
+    }
   }
 }
