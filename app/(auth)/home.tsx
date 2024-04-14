@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
 	View,
 	Text,
@@ -15,9 +15,26 @@ import AddFriend from "../../components/friends/addFriend";
 import FriendList from "@/components/friends/friendList";
 import FriendRequests from "@/components/friends/friendRequest";
 import tw from "@/lib/tailwind";
+import { usePushNotifications } from "@/lib/notifications";
+import { updatePushToken } from "@/lib/utils";
+import { useSupabase } from "@/hooks/useSupabase";
+
 
 export default function Index() {
+	const {user} = useSupabase();
+
 	const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
+
+	const { expoPushToken, notification } = usePushNotifications(); // Use the hook
+
+	useEffect(() => {
+		if (expoPushToken) {
+			updatePushToken(expoPushToken, user?.id ||"");
+		}
+		if (notification) {
+			console.log("Notification received:", notification);
+		}
+	}, [expoPushToken, notification]);
 
 	const toggleAddFriendModalVisibility = () => {
 		setAddFriendModalVisible(!isAddFriendModalVisible);
