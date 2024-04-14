@@ -34,38 +34,33 @@ export const usePushNotifications = (): PushNotificationState => {
   const responseListener = useRef<Notifications.Subscription>();
 
   async function registerForPushNotificationsAsync() {
-    let token;
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-
-      if (finalStatus !== "granted") {
-        Alert.alert("Failed to get push token for push notification");
-        return;
-      }
-
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig?.extra?.eas.projectId,
-      });
-    } else {
-      Alert.alert("Must be using a physical device for Push notifications");
-    }
-
-    if (Platform.OS === "android") {
-      Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: "#FF231F7C",
-      });
-    }
-
-    return token;
+	let token;
+	if (Constants.isDevice) {
+	  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+	  let finalStatus = existingStatus;
+	  if (existingStatus !== 'granted') {
+		const { status } = await Notifications.requestPermissionsAsync();
+		finalStatus = status;
+	  }
+	  if (finalStatus !== 'granted') {
+		alert('Failed to get push token for push notification!');
+		return;
+	  }
+	  token = (await Notifications.getExpoPushTokenAsync()).data;
+	} else {
+	  alert('Must use physical device for Push Notifications');
+	}
+  
+	if (Platform.OS === 'android') {
+	  Notifications.setNotificationChannelAsync('default', {
+		name: 'default',
+		importance: Notifications.AndroidImportance.MAX,
+		vibrationPattern: [0, 250, 250, 250],
+		lightColor: '#FF231F7C',
+	  });
+	}
+  
+	return token;
   }
 
   useEffect(() => {
@@ -96,6 +91,23 @@ export const usePushNotifications = (): PushNotificationState => {
     notification,
   };
 };
+
+
+async function resetNotificationPermissions() {
+	const { status } = await Notifications.requestPermissionsAsync();
+	if (status !== "granted") {
+	  Alert.alert("Failed to get push token for push notification");
+	  return;
+	}
+	const token = await Notifications.getExpoPushTokenAsync();
+	return token;
+  }
+  
+  export async function handleNewUserLogin() {
+	const token = await resetNotificationPermissions();
+  }
+  
+  
 
 
 export async function retreiveNotificationToken(){
