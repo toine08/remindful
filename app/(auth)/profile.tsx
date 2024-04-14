@@ -15,10 +15,9 @@ import { Button, Input } from "@/components/ui";
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
-import { updatePushToken, getUsername } from "@/lib/utils";
+import {getUsername } from "@/lib/utils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Link, router } from "expo-router";
-import { usePushNotifications } from "@/lib/notifications";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
@@ -53,15 +52,7 @@ export default function Profile() {
 			getLastName(user?.id).then((lastName) =>
 				setLastNameValue(lastName || ""),
 			);
-		}
-		(async () => {
-			if (!tokenUpdated) {
-				const token = await usePushNotifications();
-				const tokenValue = token ?? "";
-				await updatePushToken(tokenValue, user?.id ?? "");
-				setTokenUpdated(true);
-			}
-		})();
+		};
 
 		const fetchAvatarUrl = async () => {
 			const { data } = await supabase.storage
@@ -237,15 +228,15 @@ export default function Profile() {
 				<View style={tw`flex flex-col mt-2 gap-y-4`}>
 					<Input
 						size="large"
-						placeholder={firstNameValue?.length<= 2 ? "Firstname" : firstNameValue}
-						value={firstNameValue?.length<= 2 ? "Firstname" : firstNameValue}
+						placeholder="Firstname"
+						value={firstNameValue}
 						onChangeText={setFirstNameValue}
 						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
 					<Input
 						size="large"
-						placeholder={lastNameValue?.length <=1 ? "Lastname" : lastNameValue}
-						value={lastNameValue?.length <=1 ? "Lastname" : lastNameValue}
+						placeholder="Lastname"
+						value={lastNameValue}
 						onChangeText={setLastNameValue}
 						style={tw`border-input text-dark-foreground dark:text-foreground`}
 					/>
