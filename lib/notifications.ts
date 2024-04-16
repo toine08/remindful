@@ -46,7 +46,7 @@ export const usePushNotifications = (): PushNotificationState => {
 		alert('Failed to get push token for push notification!');
 		return;
 	  }
-	  token = (await Notifications.getExpoPushTokenAsync()).data;
+	  token = (await Notifications.getDevicePushTokenAsync()).data;
 	} else {
 	  alert('Must use physical device for Push Notifications');
 	}
