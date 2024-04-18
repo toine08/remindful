@@ -3,7 +3,7 @@
     "name": "Remindful",
     "slug": "Remindful",
     "scheme": "xyz.togido.remindfulapp",
-    "version": "1.0.2",
+    "version": "1.0.0",
     "orientation": "portrait",
     "platforms": [
       "ios",
