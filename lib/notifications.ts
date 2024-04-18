@@ -7,6 +7,7 @@ import { supabase } from "@/config/supabase";
 import { Platform, Alert } from "react-native";
 
 const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;	
+const projectId = "852da2e4-3984-4f5a-950a-c319a03d73af"
 
 export interface PushNotificationState {
   expoPushToken?: Notifications.ExpoPushToken;
@@ -47,7 +48,7 @@ export const usePushNotifications = (): PushNotificationState => {
 		return;
 	  }
 	  token = await Notifications.getExpoPushTokenAsync({
-		projectId: Constants.expoConfig?.extra?.eas?.projectId,
+		projectId: projectId,
 	});
 	} else {
 	  alert('Must use physical device for Push Notifications');
@@ -103,7 +104,7 @@ async function resetNotificationPermissions() {
 	  return;
 	}
 	const token = await Notifications.getExpoPushTokenAsync({
-		projectId: Constants.expoConfig?.extra?.eas?.projectId,
+		projectId: projectId,
 	});
 	return token;
   }
@@ -115,7 +116,7 @@ async function resetNotificationPermissions() {
 export async function retreiveNotificationToken(){
 	try {
 		const userToken = await Notifications.getExpoPushTokenAsync({
-			projectId: Constants.expoConfig?.extra?.eas?.projectId,
+			projectId: projectId,
 		});
 		return userToken;
 	} catch (error) {
