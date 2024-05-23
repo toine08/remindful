@@ -1,7 +1,7 @@
 import { supabase } from "@/config/supabase";
 import { PushNotificationState } from "./notifications";
 import { ExpoPushToken } from "expo-notifications";
-import { DrawerLayoutAndroidBase } from "react-native";
+import { Alert, DrawerLayoutAndroidBase } from "react-native";
 
 export async function handleFriendRequest(
 	action: "accepted" | "rejected",
@@ -42,49 +42,59 @@ export async function getConnectedUsername(userId: string | undefined) {
 	return usernameCapitalized; // accéder à la propriété username de l'objet retourné
 }
 
-export async function updatePushToken(pushToken: ExpoPushToken, userid: string) {
+export async function updatePushToken(
+	pushToken: string,
+	userid: string,
+) {
+	console.log("User ID is present:", userid);
 	// Vérifier si le token de notification existe
 	if (!pushToken) {
-	  console.log("No push token to update");
-	  return;
+		console.log("No push token to update");
+		return;
 	}
-  
+
 	// Récupérer le push token actuellement enregistré pour l'utilisateur
-	const { data: existingData, error:existingDataError } = await supabase
-	  .from("profiles")
-	  .select("push_token")
-	  .eq("id", userid)
-	  .single();
-  
-	if (existingDataError) {
-	  console.log("Error fetching existing push token:", existingDataError);
-	  return;
-	}
-  
-	// Vérifier si le token actuel est identique au nouveau token
-	if (existingData?.push_token === pushToken) {
-	  console.log("Push token is already up to date");
-	  return;
-	}
-  
-	// Mettre à jour le push token uniquement s'il a changé
+	let expoPushNotificationTokenSupabase =  await getPushTokenFromSupabase(userid);
+
+	if (expoPushNotificationTokenSupabase === pushToken) {
+		console.log("Push token is the same. No need to update.");
+		return;
+	}else{
+			// Mettre à jour le push token uniquement s'il a changé
 	const { data, error } = await supabase
-	  .from("profiles")
-	  .update({ push_token: pushToken })
-	  .eq("id", userid);
-  
-	if (error) {
-	  console.log("Error updating push token:", error);
-	} else {
-	  console.log("Successfully updated push token:", data);
+	.from("profiles")
+	.update({ push_token: pushToken })
+	.eq("id", userid);
+
+if (error) {
+	console.log("Error updating push token:", error);
+} else {
+	console.log("Successfully updated push token:", data);
+}
 	}
-  }
-  
+
+}
+
+export async function getPushTokenFromSupabase(userId: string) {
+	if (userId) {
+		const pushNotif = await supabase
+		.from("profiles")
+		.select("push_token")
+		.eq("id",userId)
+		.single();
+		return pushNotif?.data?.push_token;
+
+	  } else {
+		console.log("User ID is missing.")
+		return Alert.alert("User ID is missing.");
+	  }
+}
+
 export function getRandomColor() {
-	const letters = '0123456789ABCDEF';
-	let color = '#';
+	const letters = "0123456789ABCDEF";
+	let color = "#";
 	for (let i = 0; i < 6; i++) {
-	  color += letters[Math.floor(Math.random() * 16)];
+		color += letters[Math.floor(Math.random() * 16)];
 	}
 	return color;
-  }
+}

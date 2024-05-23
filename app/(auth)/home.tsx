@@ -8,7 +8,7 @@ import {
 	Keyboard,
 	SafeAreaView,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesome } from "@expo/vector-icons";
 
 import AddFriend from "../../components/friends/addFriend";
 
@@ -16,7 +16,7 @@ import FriendList from "@/components/friends/friendList";
 import FriendRequests from "@/components/friends/friendRequest";
 import tw from "@/lib/tailwind";
 import { usePushNotifications } from "@/lib/notifications";
-import { updatePushToken } from "@/lib/utils";
+import { updatePushToken, getPushTokenFromSupabase} from "@/lib/utils";
 import { useSupabase } from "@/hooks/useSupabase";
 
 
@@ -25,16 +25,29 @@ export default function Index() {
 
 	const [isAddFriendModalVisible, setAddFriendModalVisible] = useState(false);
 
-	const { expoPushToken, notification } = usePushNotifications(); // Use the hook
-
-	useEffect(() => {
+	const { expoPushToken, notification } = usePushNotifications();
+	async function checkAndUpdateToken() {
 		if (expoPushToken) {
-			updatePushToken(expoPushToken, user?.id ||"");
+		  const supabaseResponse = await getPushTokenFromSupabase(user?.id || ""); // Fetch the token from Supabase
+	  
+		  // Check if data exists in the response and extract the push_token
+		  const supabaseToken = supabaseResponse.data ? supabaseResponse.data.push_token : null;
+	  
+		  if (expoPushToken !== supabaseToken) {
+			await updatePushToken(expoPushToken, user?.id || ""); // Update the token if it's different
+		  }
 		}
-		if (notification) {
-			console.log("Notification received:", notification);
-		}
-	}, [expoPushToken, notification]);
+	  }
+	  
+	  checkAndUpdateToken();
+
+  useEffect(() => {
+    if (notification) {
+      console.log("Notification received:", notification);
+    }
+
+  }, [notification]);
+
 
 	const toggleAddFriendModalVisibility = () => {
 		setAddFriendModalVisible(!isAddFriendModalVisible);
@@ -49,18 +62,15 @@ export default function Index() {
 			<SafeAreaView
 				style={tw`pt-12 flex-1 items-start w-full justify-start bg-foreground dark:bg-stone-950`}
 			>
-				<Text style={tw`h3 font-bold mb-2 self-center mx-auto text-dark-foreground dark:text-foreground`}>
-					Home
-				</Text>
 				<View style={tw`flex-1 w-full items-center m-2 p-2`}>
 					<View style={tw`flex-row justify-end w-full `}>
 						<TouchableOpacity
-							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center text-foreground dark:text-foreground`}
+							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center bg-red-500 text-foreground dark:text-foreground`}
 							onPress={toggleAddFriendModalVisibility}
 						>
-							<Icon
+							<FontAwesome
 								name="plus"
-								style={tw`plus`}
+								size={20}
 							/>
 						</TouchableOpacity>
 					</View>

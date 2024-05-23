@@ -4,9 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "@/lib/tailwind";
 import { retreiveNotificationToken } from "@/lib/notifications";
 import { useState, useEffect } from "react";
+import { ExpoPushToken } from "expo-notifications";
 
 function About() {
-    const [token, setToken] = useState<string | undefined>();
+    const [token, setToken] = useState<ExpoPushToken | undefined>();
 
     useEffect(() => {
         const fetchToken = async () => {

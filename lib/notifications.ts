@@ -10,51 +10,44 @@ const expoKey = process.env.EXPO_PUBLIC_ACCESS_TOKEN;
 const projectId = "852da2e4-3984-4f5a-950a-c319a03d73af"
 
 export interface PushNotificationState {
-  expoPushToken?: Notifications.ExpoPushToken;
-  notification?: Notifications.Notification;
-}
-
-export const usePushNotifications = (): PushNotificationState => {
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: false,
-      shouldShowAlert: true,
-      shouldSetBadge: false,
-    }),
-  });
-
-  const [expoPushToken, setExpoPushToken] = useState<
-    Notifications.ExpoPushToken | undefined
-  >();
-
-  const [notification, setNotification] = useState<
-    Notifications.Notification | undefined
-  >();
-
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
-
-  async function registerForPushNotificationsAsync() {
-	let token;
-	if (Device.isDevice) {
-	  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-	  let finalStatus = existingStatus;
-	  if (existingStatus !== 'granted') {
-		const { status } = await Notifications.requestPermissionsAsync();
-		finalStatus = status;
-	  }
-	  if (finalStatus !== 'granted') {
-		alert('Failed to get push token for push notification!');
-		return;
-	  }
-	  token = await Notifications.getExpoPushTokenAsync({
-		projectId: projectId,
-	});
-	} else {
-	  alert('Must use physical device for Push Notifications');
-	}
+	expoPushToken?: string;
+	notification?: Notifications.Notification;
+  }
   
-	if (Platform.OS === "android") {
+  export const usePushNotifications = (): PushNotificationState => {
+	Notifications.setNotificationHandler({
+	  handleNotification: async () => ({
+		shouldPlaySound: false,
+		shouldShowAlert: true,
+		shouldSetBadge: false,
+	  }),
+	});
+  
+	const [expoPushToken, setExpoPushToken] = useState<string>();
+	const [notification, setNotification] = useState<Notifications.Notification>();
+  
+	const notificationListener = useRef<Notifications.Subscription>();
+	const responseListener = useRef<Notifications.Subscription>();
+  
+	async function registerForPushNotificationsAsync() {
+	  let token;
+	  if (Platform.OS !== "web") {
+		const { status: existingStatus } = await Notifications.getPermissionsAsync();
+		let finalStatus = existingStatus;
+		if (existingStatus !== "granted") {
+		  const { status } = await Notifications.requestPermissionsAsync();
+		  finalStatus = status;
+		}
+		if (finalStatus !== "granted") {
+		  alert("Failed to get push token for push notification!");
+		  return;
+		}
+		token = (await Notifications.getExpoPushTokenAsync()).data;
+	  } else {
+		alert("Must use physical device for Push Notifications");
+	  }
+  
+	  if (Platform.OS === "android") {
 		Notifications.setNotificationChannelAsync("default", {
 		  name: "default",
 		  importance: Notifications.AndroidImportance.MAX,
@@ -71,30 +64,25 @@ export const usePushNotifications = (): PushNotificationState => {
 		setExpoPushToken(token);
 	  });
   
-	  notificationListener.current =
-		Notifications.addNotificationReceivedListener((notification) => {
-		  setNotification(notification);
-		});
+	  notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+		setNotification(notification);
+	  });
   
-	  responseListener.current =
-		Notifications.addNotificationResponseReceivedListener((response) => {
-		  console.log(response);
-		});
+	  responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+		console.log(response);
+	  });
   
 	  return () => {
-		Notifications.removeNotificationSubscription(
-		  notificationListener.current!
-		);
-  
+		Notifications.removeNotificationSubscription(notificationListener.current!);
 		Notifications.removeNotificationSubscription(responseListener.current!);
 	  };
 	}, []);
-
-  return {
-    expoPushToken,
-    notification,
+  
+	return {
+	  expoPushToken,
+	  notification,
+	};
   };
-};
 
 
 async function resetNotificationPermissions() {
@@ -215,3 +203,4 @@ export async function hasSentNotificationInTheLastHour(sender: string, receiver:
 		console.log("Erreur lors de l'envoi de la notification :", error);
 	}
 }
+

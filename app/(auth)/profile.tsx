@@ -182,24 +182,7 @@ export default function Profile() {
 		<SafeAreaView
 			style={tw`pt-12 flex-1 items-center bg-foreground dark:bg-stone-950`}
 		>
-			<View style={tw`flex-row justify-between items-center w-full px-5`}>
-				<TouchableOpacity onPress={()=>("Information")}>
-					<Link href="/about">
-						<Icon name="info" style={tw`plus`} />
-					</Link>
-				</TouchableOpacity>
-
-				<Text
-					style={tw` -mr-2 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}
-				>
-					Profile
-				</Text>
-				<TouchableOpacity onPress={signOut}>
-					<Icon name="sign-out" style={tw`plus`} />
-				</TouchableOpacity>
-			</View>
-
-			<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
+				<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
 				<View style={tw`flex-row items-center`}>
 					<TouchableOpacity
 						onPress={() => console.log(user?.id)}
@@ -213,7 +196,7 @@ export default function Profile() {
 							/>
 						) : (
 							<Image
-								source={{ uri: avatarUrl }} // Fix: Pass avatarUrl as a string
+								source={{ uri: avatarUrl }}
 								style={tw`h-30 w-30 rounded-full bg-foreground dark:bg-dark-foreground`}
 								cachePolicy="none"
 							/>

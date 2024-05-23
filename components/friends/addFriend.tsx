@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { TextInput, View, Text, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
 import { sendPushNotification } from "@/lib/notifications";
 import tw from "@/lib/tailwind";
 import { getConnectedUsername } from "@/lib/utils";
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function AddFriend() {
 	const [username, setUsername] = useState("");
@@ -96,7 +95,7 @@ export default function AddFriend() {
 					style={tw`flex-row items-center rounded w-14 justify-center ml-2 text-dark-foreground dark:text-foreground`}
 					onPress={addFriend}
 				>
-					<Icon name="plus" style={tw`plus`} />
+					<FontAwesome name="plus" />
 				</TouchableOpacity>
 			</View>
 		</View>

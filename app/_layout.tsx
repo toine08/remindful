@@ -41,7 +41,6 @@ export default function Root() {
 			<GestureHandlerRootView style={tw`flex-1`}>
 				<SafeAreaProvider>
 					<InitialLayout />
-					<Menu />
 				</SafeAreaProvider>
 			</GestureHandlerRootView>
 		</SupabaseProvider>
