@@ -76,7 +76,7 @@ export default function AppLayout() {
 							/>
 						</View>
 					),
-					headerLeft: () => (
+					/*headerLeft: () => (
 						<View>
 							<Ionicons
 								name="information-circle-sharp"
@@ -86,7 +86,7 @@ export default function AppLayout() {
 								onPress={() => navigation.navigate("about")}
 							/>
 						</View>
-					),
+					),*/
 				}}
 			/>
 		</Tabs>

@@ -8,6 +8,7 @@ import {
 	Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Image } from "expo-image";
 
 import { supabase } from "@/config/supabase";
 import { useSupabase } from "@/hooks/useSupabase";
@@ -15,7 +16,6 @@ import { sendPushNotification } from "@/lib/notifications";
 import tw from "@/lib/tailwind";
 import { getUsername, getConnectedUsername } from "@/lib/utils";
 import React from "react";
-import { Button } from "../ui";
 
 type Friend = {
 	friend_id: string;
@@ -117,6 +117,8 @@ function FriendList() {
 	
 	}
 	}
+
+
 
 	return (
 		<View style={tw`flex-1 pt-5 w-full h-full`}>
