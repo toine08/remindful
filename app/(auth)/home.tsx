@@ -8,7 +8,7 @@ import {
 	Keyboard,
 	SafeAreaView,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import AddFriend from "../../components/friends/addFriend";
 
@@ -68,7 +68,7 @@ export default function Index() {
 							style={tw`flex-row items-center rounded-full h-8 w-8 mr-6 justify-center bg-primary dark:bg-dark-primary text-foreground dark:text-foreground`}
 							onPress={toggleAddFriendModalVisibility}
 						>
-							<FontAwesome
+							<Icon
 								name="plus"
 								size={20}
 							/>

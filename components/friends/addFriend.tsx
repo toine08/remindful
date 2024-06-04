@@ -5,7 +5,7 @@ import { useSupabase } from "@/hooks/useSupabase";
 import { sendPushNotification } from "@/lib/notifications";
 import tw from "@/lib/tailwind";
 import { getConnectedUsername } from "@/lib/utils";
-import { FontAwesome } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function AddFriend() {
 	const [username, setUsername] = useState("");
@@ -74,7 +74,7 @@ export default function AddFriend() {
 				"Friend request",
 				`${connectedUsername} sent you a friend request!`,
 				user?.id || "",
-				"friend_request"
+				"friend_request",
 			);
 		}, 3000);
 	}
@@ -92,10 +92,10 @@ export default function AddFriend() {
 					style={tw`p-2 grow rounded border border-primary dark:border-dark-primary text-dark-foreground dark:text-foreground h-12`}
 				/>
 				<TouchableOpacity
-					style={tw`flex-row items-center rounded w-14 justify-center ml-2 text-dark-foreground dark:text-foreground`}
+					style={tw`flex-row items-center rounded-full h-8 w-8 mr-6 ml-6 justify-center bg-primary dark:bg-dark-primary text-foreground dark:text-foreground`}
 					onPress={addFriend}
 				>
-					<FontAwesome name="plus" />
+					<Icon name="plus" style={tw`text-lg`} />
 				</TouchableOpacity>
 			</View>
 		</View>
