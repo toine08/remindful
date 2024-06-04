@@ -4,8 +4,6 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useDeviceContext } from "twrnc";
-
-import Menu from "@/components/menu";
 import { SupabaseProvider } from "@/context/SupabaseProvider";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";

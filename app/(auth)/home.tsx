@@ -65,7 +65,7 @@ export default function Index() {
 				<View style={tw`flex-1 w-full items-center m-2 p-2`}>
 					<View style={tw`flex-row justify-end w-full `}>
 						<TouchableOpacity
-							style={tw`flex-row items-center rounded-full h-10 w-10 mr-5 justify-center bg-red-500 text-foreground dark:text-foreground`}
+							style={tw`flex-row items-center rounded-full h-8 w-8 mr-6 justify-center bg-primary dark:bg-dark-primary text-foreground dark:text-foreground`}
 							onPress={toggleAddFriendModalVisibility}
 						>
 							<FontAwesome

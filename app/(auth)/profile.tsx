@@ -10,6 +10,7 @@ import {
 	TouchableOpacity,
 	ActivityIndicator,
 	SafeAreaView,
+	Modal,
 } from "react-native";
 import { Button, Input } from "@/components/ui";
 import { supabase } from "@/config/supabase";
@@ -18,9 +19,11 @@ import tw from "@/lib/tailwind";
 import {getUsername } from "@/lib/utils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Link, router } from "expo-router";
+import About from "../about";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
+	const [modalVisible, setModalVisible] = useState(false);
 	const [username, setUsername] = useState<string | null>(null);
 	const [firstName, setFirstName] = useState<string>("");
 	const [lastName, setLastName] = useState<string>("");
@@ -230,6 +233,25 @@ export default function Profile() {
 					onPress={handleUpdateInfos}
 				/>
 			</View>
+			<Modal
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    setModalVisible(!modalVisible);
+  }}
+>
+  <View style={tw`flex items-center justify-center flex-1 bg-transparent`}>
+    <View style={tw`m-4 p-5 bg-white rounded-xl shadow-lg w-full max-w-xs`}>
+		<About/>
+      <Button
+        onPress={() => setModalVisible(!modalVisible)}
+        label="Close"
+        style={tw`mt-4 bg-blue-500 text-white rounded-lg px-4 py-2`}
+      />
+    </View>
+  </View>
+</Modal>
 		</SafeAreaView>
 	);
 }
