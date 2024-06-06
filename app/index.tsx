@@ -10,6 +10,7 @@ import { Button, FormLabel, FormMessage, Input } from "@/components/ui";
 import { useSupabase } from "@/hooks/useSupabase";
 import tw from "@/lib/tailwind";
 import { handleNewUserLogin } from "@/lib/notifications";
+import { Auth } from "@/components/Auth";
 
 const FormSchema = z.object({
 	email: z.string().email("Please enter a valid email address."),

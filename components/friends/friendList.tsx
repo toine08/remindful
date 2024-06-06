@@ -118,6 +118,31 @@ function FriendList() {
 	}
 	}
 
+	const handleNotificationSend = async (friendId: any) => {
+		try {
+		  const { error } = await supabase.functions.invoke('sendNotif', {
+			body: JSON.stringify({
+			  type: 'INSERT', // or 'UPDATE' or 'DELETE' depending on your use case
+			  table: 'notifications', // replace with the name of your table
+			  schema: 'public',
+			  record: {// replace with the id of the notification
+				user_id: user?.id || 'ERROR',
+				body: `${connectedUsername} pense à toi!`,
+			  },
+			  old_record: null,
+			}),
+		  });
+	  
+		  if (error) {
+			console.error('Error sending notification:', error.message);
+		  } else {
+			console.log('Notification sent successfully');
+		  }
+		} catch (error) {
+		  console.error('Error sending notification:', error);
+		}
+	  };
+
 
 
 	return (
@@ -142,15 +167,7 @@ function FriendList() {
 								</Text>
 								<TouchableOpacity
 									style={tw`flex-row items-center w-1/6`}
-									onPress={() => {
-										sendPushNotification(
-											user?.id || "ERROR",
-											"Remindful",
-											`${connectedUsername} pense à toi!`,
-											friend.friend_id,
-											"thought"
-										);
-									}}
+									onPress={() => handleNotificationSend(friend.friend_id)}
 								>
 									<Icon name="bell" style={tw`bell`} />
 								</TouchableOpacity>
