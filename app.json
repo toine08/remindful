@@ -23,6 +23,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "xyz.togido.remindfulapp",
+      "buildNumber": "3",
       "usesAppleSignIn": true,
       "config": {
         "usesNonExemptEncryption": false
