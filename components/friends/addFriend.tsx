@@ -69,13 +69,12 @@ export default function AddFriend() {
 		}
 
 		setTimeout(() => {
-			sendPushNotification(
-				data.id,
-				"Friend request",
-				`${connectedUsername} sent you a friend request!`,
-				user?.id || "",
-				"friend_request",
-			);
+			sendPushNotification({
+				senderId: user.id,
+				receiverId: data.id,
+				message: `${connectedUsername} sent you a friend request!`,
+				type: "friend_request",
+			  });
 		}, 3000);
 	}
 

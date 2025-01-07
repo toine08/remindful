@@ -2,6 +2,8 @@ import { supabase } from "@/config/supabase";
 import { PushNotificationState } from "./notifications";
 import { ExpoPushToken } from "expo-notifications";
 import { Alert, DrawerLayoutAndroidBase } from "react-native";
+import * as Notifications from 'expo-notifications';
+
 
 export async function handleFriendRequest(
 	action: "accepted" | "rejected",
@@ -41,53 +43,58 @@ export async function getConnectedUsername(userId: string | undefined) {
 		: "";
 	return usernameCapitalized; // accéder à la propriété username de l'objet retourné
 }
-
-export async function updatePushToken(
-	pushToken: string,
-	userid: string,
-) {
-	console.log("User ID is present:", userid);
-	// Vérifier si le token de notification existe
+export async function updatePushToken(pushToken: ExpoPushToken, userId: string) {
+	console.log("Updating push token:", { pushToken: pushToken.data, userId });
+	
 	if (!pushToken) {
-		console.log("No push token to update");
-		return;
+	  console.log("No push token to update");
+	  return;
 	}
-
-	// Récupérer le push token actuellement enregistré pour l'utilisateur
-	let expoPushNotificationTokenSupabase =  await getPushTokenFromSupabase(userid);
-
-	if (expoPushNotificationTokenSupabase === pushToken) {
-		console.log("Push token is the same. No need to update.");
-		return;
-	}else{
-			// Mettre à jour le push token uniquement s'il a changé
-	const { data, error } = await supabase
-	.from("profiles")
-	.update({ push_token: pushToken })
-	.eq("id", userid);
-
-if (error) {
-	console.log("Error updating push token:", error);
-} else {
-	console.log("Successfully updated push token:", data);
-}
+  
+	if (!userId) {
+	  console.log("No user ID provided for updating push token");
+	  return;
 	}
-
-}
+  
+	try {
+	  const { data, error } = await supabase
+		.from('profiles')
+		.update({ push_token: pushToken.data })
+		.eq('id', userId);
+  
+	  if (error) {
+		console.error("Error updating push token:", error);
+	  } else {
+		console.log("Successfully updated push token:", data);
+	  }
+	} catch (error) {
+	  console.error("Error in updatePushToken:", error);
+	}
+  }
 
 export async function getPushTokenFromSupabase(userId: string) {
-	if (userId) {
-		const pushNotif = await supabase
-		.from("profiles")
-		.select("push_token")
-		.eq("id",userId)
-		.single();
-		return pushNotif?.data?.push_token;
+	if (!userId) {
+		console.error("User ID is missing.");
+		return null;
+	}
 
-	  } else {
-		console.log("User ID is missing.")
-		return Alert.alert("User ID is missing.");
-	  }
+	try {
+		const { data, error } = await supabase
+			.from("profiles")
+			.select("push_token")
+			.eq("id", userId)
+			.single();
+
+		if (error) {
+			console.error("Error fetching push token:", error.message);
+			return null;
+		}
+
+		return data?.push_token || null;
+	} catch (error) {
+		console.error("Error in getPushTokenFromSupabase:", error);
+		return null;
+	}
 }
 
 export function getRandomColor() {

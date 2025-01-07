@@ -1,10 +1,10 @@
 import { Tabs, Link } from "expo-router";
 import React from "react";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { View, useColorScheme } from "react-native";
+import { View, useColorScheme, TouchableOpacity, Text } from "react-native";
 import Colors from "@/constants/Colors";
 import { useSupabase } from "@/hooks/useSupabase";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 function useClientOnlyValue<S, C>(server: S, client: C): S | C {
 	return client;
@@ -19,15 +19,17 @@ function TabBarIcon(props: {
 
 export default function AppLayout() {
 	const navigation = useNavigation();
+	const isFocused = useIsFocused(); // For detecting screen focus
 	const colorScheme = useColorScheme();
 	const { signOut, user } = useSupabase();
 
-	console.log(colorScheme);
+	// A function to refresh the current screen
+
+
 	return (
 		<Tabs
 			screenOptions={{
 				tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-
 				tabBarStyle: {
 					backgroundColor: Colors[colorScheme ?? "light"].background,
 					borderTopWidth: 0,
@@ -37,8 +39,6 @@ export default function AppLayout() {
 				},
 				headerShadowVisible: false,
 				headerTintColor: Colors[colorScheme ?? "light"].text,
-				// Disable the static render of the header on web
-				// to prevent a hydration error in React Navigation v6.
 				headerShown: useClientOnlyValue(false, true),
 			}}
 		>
@@ -76,17 +76,6 @@ export default function AppLayout() {
 							/>
 						</View>
 					),
-					/*headerLeft: () => (
-						<View>
-							<Ionicons
-								name="information-circle-sharp"
-								size={24}
-								color={Colors[colorScheme ?? "light"].icon}
-								style={{ marginLeft: 16 }}
-								onPress={() => navigation.navigate("about")}
-							/>
-						</View>
-					),*/
 				}}
 			/>
 		</Tabs>

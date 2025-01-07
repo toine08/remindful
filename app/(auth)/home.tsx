@@ -18,6 +18,7 @@ import tw from "@/lib/tailwind";
 import { usePushNotifications } from "@/lib/notifications";
 import { updatePushToken, getPushTokenFromSupabase} from "@/lib/utils";
 import { useSupabase } from "@/hooks/useSupabase";
+import { ExpoPushToken } from "expo-notifications";
 
 
 export default function Index() {
@@ -29,17 +30,17 @@ export default function Index() {
 	async function checkAndUpdateToken() {
 		if (expoPushToken) {
 		  const supabaseResponse = await getPushTokenFromSupabase(user?.id || ""); // Fetch the token from Supabase
-	  
-		  // Check if data exists in the response and extract the push_token
-		  const supabaseToken = supabaseResponse.data ? supabaseResponse.data.push_token : null;
-	  
-		  if (expoPushToken !== supabaseToken) {
-			await updatePushToken(expoPushToken, user?.id || ""); // Update the token if it's different
-		  }
-		}
+  
+	  // Check if data exists in the response and extract the push_token
+	  const supabaseToken = supabaseResponse.data ? supabaseResponse.data.push_token : null;
+  
+	  if (expoPushToken && expoPushToken !== supabaseToken) {
+		await updatePushToken(expoPushToken, user?.id || ""); // Update the token if it's different
 	  }
-	  
-	  checkAndUpdateToken();
+	}
+  }
+  
+  checkAndUpdateToken();
 
   useEffect(() => {
     if (notification) {
