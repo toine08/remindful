@@ -13,10 +13,10 @@ module.exports = {
 				"card-foreground": "hsl(201, 0%, 100%)",
 				popover: "hsl(135, 84%, 98%)", // #DDF093 => hsl(135, 84%, 98%)
 				"popover-foreground": "hsl(0, 0%, 26.7%)", // or any other suitable dark value for
-				primary: "hsl(127, 60%, 73%)", // same as before
+				primary: "hsl(127, 60%, 73%)", // same as before, green color
 				"primary-foreground": "hsl(201, 0%, 100%)",
-				secondary: "hsl(225, 84.9%, 52.9%)", // new secondary color for light mode
-				"secondary-foreground": "hsl(0, 0%, 26.7%)", // or any other suitable dark value for
+				secondary: "hsl(225, 84.9%, 52.9%)", // new secondary color for light mode blue
+				"secondary-foreground": "hsl(0, 0%, 26.7%)", // or any other suitable dark value. grey
 				"text-secondary": "hsl(0, 0%, 89.8%)",
 				input: "hsl(0, 0%, 89.8%)",
 				ring: "hsl(0, 0%, 3.9%)",

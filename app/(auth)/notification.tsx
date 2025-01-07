@@ -112,11 +112,6 @@ function NotificationsList() {
 		<SafeAreaView
 			style={tw`pt-12 w-full h-full flex-1 items-center bg-foreground dark:bg-stone-950`}
 		>
-			<Text
-				style={tw`h3 font-bold mb-2 self-center mx-auto text-dark-foreground dark:text-foreground`}
-			>
-				Notifications
-			</Text>
 			<View style={tw`flex-row justify-between items-center w-full px-5`}>
 				<FlatList
 					data={notifications}

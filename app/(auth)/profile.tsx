@@ -10,6 +10,7 @@ import {
 	TouchableOpacity,
 	ActivityIndicator,
 	SafeAreaView,
+	Modal,
 } from "react-native";
 import { Button, Input } from "@/components/ui";
 import { supabase } from "@/config/supabase";
@@ -18,9 +19,11 @@ import tw from "@/lib/tailwind";
 import {getUsername } from "@/lib/utils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Link, router } from "expo-router";
+import About from "../about";
 
 export default function Profile() {
 	const { signOut, user } = useSupabase();
+	const [modalVisible, setModalVisible] = useState(false);
 	const [username, setUsername] = useState<string | null>(null);
 	const [firstName, setFirstName] = useState<string>("");
 	const [lastName, setLastName] = useState<string>("");
@@ -182,24 +185,7 @@ export default function Profile() {
 		<SafeAreaView
 			style={tw`pt-12 flex-1 items-center bg-foreground dark:bg-stone-950`}
 		>
-			<View style={tw`flex-row justify-between items-center w-full px-5`}>
-				<TouchableOpacity onPress={()=>("Information")}>
-					<Link href="/about">
-						<Icon name="info" style={tw`plus`} />
-					</Link>
-				</TouchableOpacity>
-
-				<Text
-					style={tw` -mr-2 mb-1 text-center h3 font-bold text-dark-foreground dark:text-foreground`}
-				>
-					Profile
-				</Text>
-				<TouchableOpacity onPress={signOut}>
-					<Icon name="sign-out" style={tw`plus`} />
-				</TouchableOpacity>
-			</View>
-
-			<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
+				<View style={tw`p-4 mt-10 items-center justify-center gap-y-10`}>
 				<View style={tw`flex-row items-center`}>
 					<TouchableOpacity
 						onPress={() => console.log(user?.id)}
@@ -213,7 +199,7 @@ export default function Profile() {
 							/>
 						) : (
 							<Image
-								source={{ uri: avatarUrl }} // Fix: Pass avatarUrl as a string
+								source={{ uri: avatarUrl }}
 								style={tw`h-30 w-30 rounded-full bg-foreground dark:bg-dark-foreground`}
 								cachePolicy="none"
 							/>
@@ -247,6 +233,25 @@ export default function Profile() {
 					onPress={handleUpdateInfos}
 				/>
 			</View>
+			<Modal
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    setModalVisible(!modalVisible);
+  }}
+>
+  <View style={tw`flex items-center justify-center flex-1 bg-transparent`}>
+    <View style={tw`m-4 p-5 bg-white rounded-xl shadow-lg w-full max-w-xs`}>
+		<About/>
+      <Button
+        onPress={() => setModalVisible(!modalVisible)}
+        label="Close"
+        style={tw`mt-4 bg-blue-500 text-white rounded-lg px-4 py-2`}
+      />
+    </View>
+  </View>
+</Modal>
 		</SafeAreaView>
 	);
 }
